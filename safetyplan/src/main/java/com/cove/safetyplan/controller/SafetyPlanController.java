@@ -1,8 +1,5 @@
 package com.cove.safetyplan.controller;
 
-import com.cove.safetyplan.controller.request.CopingStrategyRequest;
-import com.cove.safetyplan.controller.request.SafetyPlanRequest;
-import com.cove.safetyplan.controller.request.UserRequest;
 import com.cove.safetyplan.dto.model.CopingStrategyDto;
 import com.cove.safetyplan.dto.model.SafetyPlanDto;
 import com.cove.safetyplan.dto.model.UserDto;
@@ -38,13 +35,13 @@ public class SafetyPlanController {
     /**
      * Create a new safety plan for a patient
      * This should happen automatically when a student profile is initiated.
-     * @param safetyPlanRequest {Valid safety plan request}
+     * @param safetyPlanDto {Valid safety plan request}
      * @return {Safety Plan Dto}
      */
     @PostMapping("/new")
-    public Response newSafetyPlan(@RequestBody @Valid SafetyPlanRequest safetyPlanRequest){
+    public Response newSafetyPlan(@RequestBody @Valid SafetyPlanDto safetyPlanDto){
 
-        SafetyPlanDto response = safetyPlanService.createNewSafetyPlan(createSafetyPlanDto(safetyPlanRequest));
+        SafetyPlanDto response = safetyPlanService.createNewSafetyPlan(safetyPlanDto);
 
         return Response.ok().setPayload(response);
     }
@@ -69,10 +66,10 @@ public class SafetyPlanController {
      * @return {clinitian Dto}
      */
     @PutMapping("/{id}/clinician")
-    public Response changeSafetyPlanClinician(@PathVariable Long id, @RequestBody @Valid UserRequest clinician){
+    public Response changeSafetyPlanClinician(@PathVariable Long id, @RequestBody @Valid UserDto clinician){
         //TODO: Check that safety plan exists, if clinician exists, update the clinician id, return
 
-        UserDto response = safetyPlanService.updateClinician(id, createUserDto(clinician));
+        UserDto response = safetyPlanService.updateClinician(id, clinician);
 
         return Response.ok().setPayload(response);
     }
@@ -80,11 +77,11 @@ public class SafetyPlanController {
     /**
      *
      * TODO:Figure out if this even valid
-     * @param safetyPlanRequest {Valid safety plan request}
+     * @param safetyPlanDto {Valid safety plan request}
      * @return {Success}
      */
     @DeleteMapping("/")
-    public Response deleteSafetyPlan(@RequestBody @Valid SafetyPlanRequest safetyPlanRequest){
+    public Response deleteSafetyPlan(@RequestBody @Valid SafetyPlanDto safetyPlanDto){
         return Response.ok();
     }
 
@@ -92,28 +89,28 @@ public class SafetyPlanController {
 
     /**
      * Add a new coping strategy
-     * @param copingStrategyRequest {Coping strategy}
+     * @param copingStrategyDto {Coping strategy}
      * @param id {Safety plan id}
      * @return {List of safety plan coping strategies}
      */
     @PostMapping("/{id}/copingStrategies")
-    public Response addCopingStrategy(@RequestBody @Valid CopingStrategyRequest copingStrategyRequest, @PathVariable Long id){
+    public Response addCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto, @PathVariable Long id){
 
-        List<CopingStrategyDto> response =safetyPlanService.addCopingStrategy(id, createCopingStrategyDto(copingStrategyRequest));
+        List<CopingStrategyDto> response =safetyPlanService.addCopingStrategy(id, copingStrategyDto);
 
         return Response.ok().setPayload(response);
     }
 
     /**
      * Update a coping strategy
-     * @param copingStrategyRequest {Coping strategy to update}
+     * @param copingStrategyDto {Coping strategy to update}
      * @param id {Safetyplan id}
      * @return {Coping strategy dto}
      */
     @PutMapping("/{id}/copingStrategies")
-    public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyRequest copingStrategyRequest, @PathVariable Long id){
+    public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto, @PathVariable Long id){
 
-        CopingStrategyDto response = safetyPlanService.updateCopingStrategy(id, createCopingStrategyDto(copingStrategyRequest));
+        CopingStrategyDto response = safetyPlanService.updateCopingStrategy(id, copingStrategyDto);
         return Response.ok();
     }
 
@@ -157,25 +154,5 @@ public class SafetyPlanController {
     @DeleteMapping("{id}/copingStrategies/")
     public Response removeAllCopingStrategiesFromSafetyPlan(@PathVariable Long id){
         return Response.ok();
-    }
-
-    //Helper methods
-    private SafetyPlanDto createSafetyPlanDto(SafetyPlanRequest safetyPlanRequest){
-        SafetyPlanDto safetyPlanDto = new SafetyPlanDto()
-                .setClinician_id(safetyPlanRequest.getClinician_id())
-                .setStudent_id((safetyPlanRequest.getStudent_id()));
-        return safetyPlanDto;
-    }
-
-    private UserDto createUserDto(UserRequest userRequest){
-        UserDto userDto = new UserDto()
-                .setFirst_name(userRequest.getFirst_name())
-                .setLast_name(userRequest.getLast_name());
-        return userDto;
-    }
-
-    private CopingStrategyDto createCopingStrategyDto(CopingStrategyRequest copingStrategyRequest){
-        CopingStrategyDto copingStrategyDto = new CopingStrategyDto().setType(copingStrategyRequest.getType());
-        return copingStrategyDto;
     }
 }
