@@ -5,14 +5,19 @@ import com.cove.safetyplan.dto.model.SafetyPlanDto;
 import com.cove.safetyplan.dto.model.UserDto;
 import com.cove.safetyplan.dto.response.Response;
 import com.cove.safetyplan.service.SafetyPlanService;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/safety_plan_api/v1/safetyPlan")
+@RequestMapping(value="/safety_plan_api/v1/safetyPlan", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SafetyPlanController {
     @Autowired
     private SafetyPlanService safetyPlanService;
@@ -27,9 +32,22 @@ public class SafetyPlanController {
     @GetMapping("/{id}")
     public Response getSafetyPlan(@PathVariable Long id){
 
-        SafetyPlanDto response = safetyPlanService.getSafetyPlan(id);
+        //Get coping strategies
+        SafetyPlanDto safetyPlan = safetyPlanService.getSafetyPlan(id);
 
-        return Response.ok();
+        //Get clinician
+        UserDto clinician = safetyPlanService.getClinician(safetyPlan.getClinician_id());
+
+        //Get student
+        UserDto student = safetyPlanService.getClinician(safetyPlan.getStudent_id());
+
+        //Create response package
+        JSONObject response = new JSONObject();
+        response.put("safety-plan", safetyPlan);
+        response.put("clinician", clinician);
+        response.put("student", student);
+
+        return Response.ok().setPayload(response);
     }
 
     /**

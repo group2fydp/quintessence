@@ -5,18 +5,26 @@ import com.cove.safetyplan.dto.model.SafetyPlanDto;
 import com.cove.safetyplan.dto.model.UserDto;
 import com.cove.safetyplan.model.CopingStrategy;
 import com.cove.safetyplan.model.SafetyPlan;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import net.minidev.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class SafetyPlanServiceImpl implements SafetyPlanService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private EurekaClient eurekaClient;
 
     @Override
     public SafetyPlanDto createNewSafetyPlan(SafetyPlanDto safetyPlanDto){
@@ -34,7 +42,19 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     @Override
     public SafetyPlanDto getSafetyPlan(Long safety_plan_id){
         //TODO: Check that safety plan exists, get all members of it (warning signs, reasons to live, coping strategies, etc...)
-        SafetyPlanDto temp = new SafetyPlanDto();
+
+        //Get clinician information
+        UserDto userDto = getClinician(safety_plan_id);
+
+        //TODO: Get the student information  (need endpoint information)
+
+        Long clinician_id = new Random().nextLong();
+        Long student_id = new Random().nextLong();
+
+        SafetyPlanDto temp = new SafetyPlanDto()
+                .setClinician_id(clinician_id)
+                .setStudent_id(student_id);
+
         return temp;
         //TODO:Implement exception handling
     }
@@ -42,7 +62,15 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     @Override
     public UserDto getClinician(Long safety_plan_id){
 
-        UserDto clinician = new UserDto();
+        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("USER-SERVICE", false);
+
+        //TODO: Get user endpoint
+        final String clinician_uri_act = instanceInfo.getHomePageUrl() + "/test-api/get";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        UserDto clinician = restTemplate.getForObject(clinician_uri_act, UserDto.class);
+
         return clinician;
     }
 
