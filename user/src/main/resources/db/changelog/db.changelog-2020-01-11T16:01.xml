@@ -1,0 +1,142 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+
+    <changeSet id="1" author="tbunyadova">
+        <createTable tableName="tenant">
+            <column autoIncrement="true" startWith="10000000" name="tenant_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="clinician">
+            <column name="clinician_id" autoIncrement="true" startWith="10000000" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_student_tenant" references="tenant(tenant_id)"/>
+            </column>
+            <column type="int" name="role">
+                <constraints nullable="false" />
+            </column>
+            <column name="first_name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
+            <column name="username" type="varchar(128)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="preferred_name" type="varchar(128)" />
+            <column name="phone" type="varchar(255)" />
+            <column name="email" type="varchar(255)" />
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="student">
+            <column autoIncrement="true" startWith="10000000" name="student_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="tenant_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_tenant" references="tenant(tenant_id)"/>
+            </column>
+            <column name="safetyplan_id" type="bigint" />
+            <column name="clinician_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_clinician" references="clinician(clinician_id)" />
+            </column>
+            <column name="username" type="varchar(128)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="student_number" type="bigint">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="first_name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
+            <column name="preferred_name" type="varchar(128)" />
+            <column name="gender" type="char(16)">
+                <constraints nullable="false" />
+            </column>
+            <column name="date_of_birth" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="personal_email" type="varchar(255)" />
+            <column name="student_email" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="cell_phone" type="varchar(255)" />
+            <column name="home_phone" type="varchar(255)" />
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_active" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="contact">
+            <column autoIncrement="true" startWith="10000000" name="contact_id" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="student_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_contact_student" references="student(student_id)" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
