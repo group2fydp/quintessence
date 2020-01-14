@@ -32,18 +32,18 @@ public class SafetyPlanController {
     @GetMapping("/{id}")
     public Response getSafetyPlan(@PathVariable Long id){
 
-        //Get coping strategies
         SafetyPlanDto safetyPlan = safetyPlanService.getSafetyPlan(id);
 
-        //Get clinician
+        List<CopingStrategyDto> copingStrategyDtos = safetyPlanService.getCopingStrategies(id);
+
         UserDto clinician = safetyPlanService.getClinician(safetyPlan.getClinician_id());
 
-        //Get student
         UserDto student = safetyPlanService.getClinician(safetyPlan.getStudent_id());
 
         //Create response package
         JSONObject response = new JSONObject();
-        response.put("safety-plan", safetyPlan);
+        response.put("safetyPlan", safetyPlan);
+        response.put("copingStrategies", copingStrategyDtos);
         response.put("clinician", clinician);
         response.put("student", student);
 

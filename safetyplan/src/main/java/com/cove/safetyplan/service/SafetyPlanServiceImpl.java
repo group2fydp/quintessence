@@ -43,11 +43,6 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     public SafetyPlanDto getSafetyPlan(Long safety_plan_id){
         //TODO: Check that safety plan exists, get all members of it (warning signs, reasons to live, coping strategies, etc...)
 
-        //Get clinician information
-        UserDto userDto = getClinician(safety_plan_id);
-
-        //TODO: Get the student information  (need endpoint information)
-
         Long clinician_id = new Random().nextLong();
         Long student_id = new Random().nextLong();
 
@@ -100,5 +95,21 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
                 .setSafety_plan_id(safety_plan_id);
 
         return updatedCopingStrategy;
+    }
+
+    @Override
+    public List<CopingStrategyDto> getCopingStrategies(Long safety_plan_id){
+
+        List<CopingStrategyDto> list = new ArrayList<>();
+        CopingStrategyDto copingStrategyDto1 = new CopingStrategyDto()
+                .setType("social")
+                .setSafety_plan_id(safety_plan_id);
+        CopingStrategyDto copingStrategyDto2 = new CopingStrategyDto()
+                .setType("crisis")
+                .setSafety_plan_id(safety_plan_id);
+        list.add(copingStrategyDto1);
+        list.add(copingStrategyDto2);
+
+        return list;
     }
 }

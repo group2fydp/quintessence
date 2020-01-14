@@ -17,4 +17,5 @@ public interface SafetyPlanService {
     //Coping strategy related methods
     List<CopingStrategyDto> addCopingStrategy(Long safety_plan_id, CopingStrategyDto copingStrategyDto);
     CopingStrategyDto updateCopingStrategy(Long safety_plan_id, CopingStrategyDto copingStrategyDto);
+    List<CopingStrategyDto> getCopingStrategies(Long safety_plan_id);
 }
