@@ -1,41 +1,36 @@
 package com.cove.safetyplan.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
+@Accessors(chain = true)
 @NoArgsConstructor
+@ToString
+@Entity
 @Table(name="coping_strategy")
 public class CopingStrategy {
     @Id
-    private Long  id;
+    private Long  CopingStrategyId;
 
-    @Column(name="safety_plan_id;")
-    private Long safety_plan_id;
+    private Long safetyplanId;
 
-    @Column(name = "type")
     private String type;
 
-    @Column(name = "created_at")
-    private Date created_at;
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
 
-    @Column(name = "last_modified_at")
-    private Date last_modified_at;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifyDate;
 
-    @Column(name = "is_deleted")
-    private boolean is_deleted;
-
-    @PrePersist
-    protected void onCreate() {
-        created_at = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        last_modified_at = new Date();
-    }
+    private boolean isDeleted;
 }

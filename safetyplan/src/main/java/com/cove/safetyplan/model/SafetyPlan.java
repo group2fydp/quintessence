@@ -1,46 +1,39 @@
 package com.cove.safetyplan.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
-import lombok.ToString;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name="safety_plan")
+@Table(name="safetyplan")
 public class SafetyPlan {
     @Id
     @GeneratedValue
-    private Long  id;
+    private Long  safetyplanId;
 
-    //TODO: Get reference to User models
-    @Column(name="student")
-    private Long student_id;
+    private Long studentId;
 
-    @Column(name="clinician")
-    private Long clinician_id;
+    private Long clinicianId;
 
-    @Column(name = "version")
     private String version;
 
-    @CreationTimestamp
-    private Date created_at;
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
 
-    @UpdateTimestamp
-    private Date last_modified_at;
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifyDate;
 
-    @Column(name = "is_deleted")
-    private boolean is_deleted;
+    private boolean isDeleted;
 
 }

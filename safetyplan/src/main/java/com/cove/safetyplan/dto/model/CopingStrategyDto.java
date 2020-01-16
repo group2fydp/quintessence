@@ -2,14 +2,10 @@ package com.cove.safetyplan.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString
@@ -17,9 +13,9 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CopingStrategyDto {
 
-    private Long id;
+    private Long CopingStrategyId;
 
-    private Long safety_plan_id;
+    private Long safetyplanId;
 
     private String type;
 

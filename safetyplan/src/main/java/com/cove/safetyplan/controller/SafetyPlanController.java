@@ -2,7 +2,6 @@ package com.cove.safetyplan.controller;
 
 import com.cove.safetyplan.dto.model.CopingStrategyDto;
 import com.cove.safetyplan.dto.model.SafetyPlanDto;
-import com.cove.safetyplan.dto.model.UserDto;
 import com.cove.safetyplan.dto.response.Response;
 import com.cove.safetyplan.service.SafetyPlanService;
 import com.netflix.appinfo.InstanceInfo;
@@ -36,16 +35,9 @@ public class SafetyPlanController {
 
         List<CopingStrategyDto> copingStrategyDtos = safetyPlanService.getCopingStrategies(id);
 
-        UserDto clinician = safetyPlanService.getClinician(safetyPlan.getClinician_id());
-
-        UserDto student = safetyPlanService.getClinician(safetyPlan.getStudent_id());
-
-        //Create response package
         JSONObject response = new JSONObject();
         response.put("safetyPlan", safetyPlan);
         response.put("copingStrategies", copingStrategyDtos);
-        response.put("clinician", clinician);
-        response.put("student", student);
 
         return Response.ok().setPayload(response);
     }
@@ -65,29 +57,15 @@ public class SafetyPlanController {
     }
 
     /**
-     * Get the clinician associated with the safety plan
-     * @param id {Safety plan id}
-     * @return {Clinician}
-     */
-    @GetMapping("/{id}/clinician")
-    public Response getClinician(@PathVariable Long id){
-
-        UserDto response = safetyPlanService.getClinician(id);
-
-        return Response.ok().setPayload(response);
-    }
-
-    /**
      * Update the clinician assigned to the safety plan
-     * @param id {Safety plan id}
-     * @param clinician {The new clinician}
+     * @param safetyPlanDto {The new safety plan dto}
      * @return {clinitian Dto}
      */
     @PutMapping("/{id}/clinician")
-    public Response changeSafetyPlanClinician(@PathVariable Long id, @RequestBody @Valid UserDto clinician){
+    public Response updateClinicianForSafetyPlan(@RequestBody @Valid SafetyPlanDto safetyPlanDto){
         //TODO: Check that safety plan exists, if clinician exists, update the clinician id, return
 
-        UserDto response = safetyPlanService.updateClinician(id, clinician);
+        SafetyPlanDto response = safetyPlanService.updateClinicianForSafetyPlan(safetyPlanDto);
 
         return Response.ok().setPayload(response);
     }
@@ -114,7 +92,7 @@ public class SafetyPlanController {
     @PostMapping("/{id}/copingStrategies")
     public Response addCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto, @PathVariable Long id){
 
-        List<CopingStrategyDto> response =safetyPlanService.addCopingStrategy(id, copingStrategyDto);
+        List<CopingStrategyDto> response =safetyPlanService.addCopingStrategy(copingStrategyDto);
 
         return Response.ok().setPayload(response);
     }
@@ -122,24 +100,22 @@ public class SafetyPlanController {
     /**
      * Update a coping strategy
      * @param copingStrategyDto {Coping strategy to update}
-     * @param id {Safetyplan id}
      * @return {Coping strategy dto}
      */
-    @PutMapping("/{id}/copingStrategies")
-    public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto, @PathVariable Long id){
+    @PutMapping("/copingStrategies")
+    public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
 
-        CopingStrategyDto response = safetyPlanService.updateCopingStrategy(id, copingStrategyDto);
+        CopingStrategyDto response = safetyPlanService.updateCopingStrategy(copingStrategyDto);
         return Response.ok();
     }
 
     /**
      * Get Coping strategy by id
-     * @param id {Safety plan id}
      * @param cs_id {Coping strategy id}
      * @return {Coping strategy dto}
      */
-    @GetMapping("/{id}/copingStrategies/{cs_id}")
-    public Response getCopingStrategyById(@PathVariable Long id, @PathVariable Long cs_id){
+    @GetMapping("/copingStrategies/{cs_id}")
+    public Response getCopingStrategy(@PathVariable Long cs_id){
         return Response.ok();
     }
 

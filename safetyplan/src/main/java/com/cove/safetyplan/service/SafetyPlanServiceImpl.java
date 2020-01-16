@@ -2,16 +2,12 @@ package com.cove.safetyplan.service;
 
 import com.cove.safetyplan.dto.model.CopingStrategyDto;
 import com.cove.safetyplan.dto.model.SafetyPlanDto;
-import com.cove.safetyplan.dto.model.UserDto;
 import com.cove.safetyplan.model.CopingStrategy;
 import com.cove.safetyplan.model.SafetyPlan;
-import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
-import net.minidev.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +28,8 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
         //TODO: Check if safety plan exists in repo (check by student ID or clinician ID)
         SafetyPlan safetyPlanModel = new SafetyPlan()
                 //TODO:Generate unique ID
-                .setClinician_id(safetyPlanDto.getClinician_id())
-                .setStudent_id(safetyPlanDto.getStudent_id());
+                .setClinicianId(safetyPlanDto.getClinicianId())
+                .setStudentId(safetyPlanDto.getStudentId());
 
         return modelMapper.map(safetyPlanModel, SafetyPlanDto.class);
         //TODO:Implement exception handling
@@ -46,39 +42,27 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
         Long clinician_id = new Random().nextLong();
         Long student_id = new Random().nextLong();
 
-        SafetyPlanDto temp = new SafetyPlanDto()
-                .setClinician_id(clinician_id)
-                .setStudent_id(student_id);
+        SafetyPlan safetyPlanModel = new SafetyPlan()
+                .setClinicianId(clinician_id)
+                .setStudentId(student_id);
 
-        return temp;
-        //TODO:Implement exception handling
+        return modelMapper.map(safetyPlanModel, SafetyPlanDto.class);
     }
 
     @Override
-    public UserDto getClinician(Long safety_plan_id){
+    public SafetyPlanDto updateClinicianForSafetyPlan(SafetyPlanDto safetyPlanDto){
+        //TODO: Check that safety plan exists
+        SafetyPlan safetyPlanModel = new SafetyPlan()
+                .setClinicianId(safetyPlanDto.getClinicianId());
 
-        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("USER-SERVICE", false);
+        //TODO: Save safety plan
 
-        //TODO: Get user endpoint
-        final String clinician_uri_act = instanceInfo.getHomePageUrl() + "/test-api/get";
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        UserDto clinician = restTemplate.getForObject(clinician_uri_act, UserDto.class);
-
-        return clinician;
-    }
-
-    @Override
-    public UserDto updateClinician(Long safety_plan_id, UserDto clinician){
-        //TODO: Check that safety plan exists, update clinician
-        UserDto updated_clinician = new UserDto();
-        return updated_clinician;
+        return modelMapper.map(safetyPlanModel, SafetyPlanDto.class);
     }
 
     // Coping Strategy methods
     @Override
-    public List<CopingStrategyDto> addCopingStrategy(Long safety_plan_id, CopingStrategyDto copingStrategyDto){
+    public List<CopingStrategyDto> addCopingStrategy(CopingStrategyDto copingStrategyDto){
         List<CopingStrategyDto> strategies = new ArrayList<>();
 
         //TODO: Get all coping strategies for the safety plan
@@ -88,13 +72,11 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     }
 
     @Override
-    public CopingStrategyDto updateCopingStrategy(Long safety_plan_id, CopingStrategyDto copingStrategyDto){
+    public CopingStrategyDto updateCopingStrategy(CopingStrategyDto copingStrategyDto){
         //TODO: Find coping strategy to update
-        CopingStrategyDto updatedCopingStrategy = new CopingStrategyDto()
-                .setType(copingStrategyDto.getType())
-                .setSafety_plan_id(safety_plan_id);
-
-        return updatedCopingStrategy;
+        CopingStrategy updatedCopingStrategy = new CopingStrategy()
+                .setType(copingStrategyDto.getType());
+        return modelMapper.map(updatedCopingStrategy, CopingStrategyDto.class);
     }
 
     @Override
@@ -103,10 +85,10 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
         List<CopingStrategyDto> list = new ArrayList<>();
         CopingStrategyDto copingStrategyDto1 = new CopingStrategyDto()
                 .setType("social")
-                .setSafety_plan_id(safety_plan_id);
+                .setSafetyplanId(safety_plan_id);
         CopingStrategyDto copingStrategyDto2 = new CopingStrategyDto()
                 .setType("crisis")
-                .setSafety_plan_id(safety_plan_id);
+                .setSafetyplanId(safety_plan_id);
         list.add(copingStrategyDto1);
         list.add(copingStrategyDto2);
 

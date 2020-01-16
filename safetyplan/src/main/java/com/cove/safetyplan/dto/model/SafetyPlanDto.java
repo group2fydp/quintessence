@@ -19,14 +19,14 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SafetyPlanDto {
 
-    private Long id;
+    private Long safetyplanId;
 
-    private Long student_id;
+    private Long studentId;
 
-    private Long clinician_id;
+    private Long clinicianId;
 
-    private Date created_at;
+    private Date createDate;
 
-    private Date last_modified_at;
+    private Date lastModifyDate;
 
 }
