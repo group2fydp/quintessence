@@ -6,7 +6,6 @@ import com.cove.user.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -47,15 +46,17 @@ public class StudentController {
 
     @PutMapping("/update")
     public StudentDTO updateStudent(@RequestBody StudentDTO studentDTO) throws UserNotFoundException {
-        return studentService.updateStudentProfile(studentDTO);
+        return studentService.updateStudent(studentDTO);
     }
 
     @DeleteMapping("/delete/{id}")
-    public Map<String, Boolean> deleteEmployee(@PathVariable final int id){
+    public Map<String, Boolean> deleteStudent(@PathVariable final int id){
         studentService.deleteStudent(id);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", true);
         return response;
     }
+
+
 
 }

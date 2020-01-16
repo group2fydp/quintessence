@@ -45,15 +45,7 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         return studentDTOS;
     }
 
-    @ReadsTenantData
-    public List<StudentDTO> getAllStudentsForClinician(long clinicianId){
-        //TODO handle null optional for clinician
-        Clinician clinician = clinicianRepository.findById(clinicianId).get();
-        List<Student> studentList = studentRepository.findByClinician(clinician);
-        List<StudentDTO> studentDTOS = new ArrayList<>();
-        studentList.forEach(student -> studentDTOS.add(modelMapper.map(student, StudentDTO.class)));
-        return studentDTOS;
-    }
+
 
     @ReadsTenantData
     public StudentDTO getStudentById(long studentId){
@@ -71,8 +63,8 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     }
 
     @ReadsTenantData
-    public StudentDTO updateStudentProfile(StudentDTO studentDTO) throws UserNotFoundException{
-        Optional<Student> student = Optional.of(studentRepository.findByStudentNumber(studentDTO.getStudentNumber()));
+    public StudentDTO updateStudent(StudentDTO studentDTO) throws UserNotFoundException{
+        Optional<Student> student = studentRepository.findById(studentDTO.getStudentId());
         if (student.isPresent()){
             Student studentModel = student.get();
             studentModel.setFirstName(studentDTO.getFirstName());

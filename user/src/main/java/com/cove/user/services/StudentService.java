@@ -7,11 +7,10 @@ import com.cove.user.exception.UserNotFoundException;
 import java.util.List;
 
 public interface StudentService {
-    public List<StudentDTO> getAllStudents();
-    public List<StudentDTO> getAllStudentsForClinician(long clinicianId);
-    public StudentDTO getStudentById(long studentId);
-    public StudentDTO addStudent(StudentDTO studentDTO);
-    public StudentDTO updateStudentProfile(StudentDTO studentDTO) throws UserNotFoundException;
-    public StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) throws UserNotFoundException;
-    public void deleteStudent(long studentId);
+    List<StudentDTO> getAllStudents();
+    StudentDTO getStudentById(long studentId);
+    StudentDTO addStudent(StudentDTO studentDTO);
+    StudentDTO updateStudent(StudentDTO studentDTO) throws UserNotFoundException;
+    StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) throws UserNotFoundException;
+    void deleteStudent(long studentId);
 }
