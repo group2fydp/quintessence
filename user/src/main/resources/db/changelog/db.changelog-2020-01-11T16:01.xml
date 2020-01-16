@@ -7,32 +7,12 @@
          http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
 
     <changeSet id="1" author="tbunyadova">
-        <createTable tableName="tenant">
-            <column autoIncrement="true" startWith="10000000" name="tenant_id" type="bigint">
-                <constraints primaryKey="true" />
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="type" type="int">
-                <constraints nullable="false" />
-            </column>
-            <column name="create_date" type="datetime">
-                <constraints nullable="false" />
-            </column>
-            <column name="last_modify_date" type="datetime">
-                <constraints nullable="false" />
-            </column>
-            <column name="is_deleted" type="boolean" defaultValue="false">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
         <createTable tableName="clinician">
             <column name="clinician_id" autoIncrement="true" startWith="10000000" type="bigint">
                 <constraints primaryKey="true" />
             </column>
             <column name="tenant_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_student_tenant" references="tenant(tenant_id)"/>
+                <constraints nullable="false" />
             </column>
             <column type="int" name="role">
                 <constraints nullable="false" />
@@ -67,7 +47,7 @@
                 <constraints primaryKey="true" />
             </column>
             <column name="tenant_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_tenant" references="tenant(tenant_id)"/>
+                <constraints nullable="false" />
             </column>
             <column name="safetyplan_id" type="bigint" />
             <column name="clinician_id" type="bigint">

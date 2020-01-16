@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -18,10 +20,12 @@ import lombok.experimental.Accessors;
 public class StudentDTO {
     private long studentId;
     private long clinicianId;
+    private long tenantId;
     private String firstName;
     private String lastName;
     private String preferredName;
     private String gender;
+    private Date dateOfBirth;
     private String username;
     private String password;
     private long studentNumber;

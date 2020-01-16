@@ -1,29 +1,32 @@
 package com.cove.user.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Date;
+
 import static java.util.Objects.requireNonNull;
 
 @Data
 @Entity
 @Table(name = "student")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
-public class Student {
+public class Student extends TenantEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long studentId;
-
-    @ManyToOne
-    @JoinColumn(name = "tenant_id")
-    private Tenant tenant;
 
     @ManyToOne
     @JoinColumn(name = "clinician_id")
@@ -42,6 +45,8 @@ public class Student {
 
     private String gender;
 
+    private Date dateOfBirth;
+
     @Column(nullable = false)
     private String username;
 
@@ -54,49 +59,42 @@ public class Student {
     @Column(nullable = false)
     private String studentEmail;
 
+//    @CreatedBy
+//    protected String createdBy;
+
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date createDate;
+
+//    @LastModifiedBy
+//    protected String lastModifiedBy;
+
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date lastModifyDate;
+
     private String personalEmail;
     private String cellPhone;
     private String homePhone;
     private boolean isDeleted;
     private boolean isActive;
 
-    @CreatedDate
-    private Date createDate;
-
-
-    @LastModifiedDate
-    private Date lastModifyDate;
-
     // Required by Hibernate
     public Student(){}
 
-    public Student(String firstName,
-                   String lastName,
-                   String preferredName,
-                   String username,
-                   String password,
-                   Clinician clinician,
-                   Tenant tenant,
-                   String gender,
-                   long studentNumber,
-                   String studentEmail,
-                   String personalEmail,
-                   String homePhone,
-                   String cellPhone
-                   ){
-        this.firstName = requireNonNull(firstName);
-        this.lastName = requireNonNull(lastName);
-        this.preferredName = preferredName;
-        this.username = requireNonNull(username);
-        this.password = new BCryptPasswordEncoder().encode(requireNonNull(password));
-        this.clinician = requireNonNull(clinician);
-        this.tenant = requireNonNull(tenant);
-        this.gender = requireNonNull(gender);
-        this.studentNumber = requireNonNull(studentNumber);
-        this.studentEmail = requireNonNull(studentEmail);
-        this.personalEmail = personalEmail;
-        this.homePhone = homePhone;
-        this.cellPhone = cellPhone;
+    @PrePersist
+    protected void prePersist(){
+        if (this.createDate == null) this.createDate = new Date();
+        if (this.lastModifyDate == null) this.lastModifyDate = new Date();
     }
 
+    @PreUpdate
+    protected void preUpdate(){
+        this.lastModifyDate = new Date();
+    }
+
+    @PreRemove
+    protected void preRemove(){
+        this.lastModifyDate = new Date();
+    }
 }

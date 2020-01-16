@@ -1,5 +1,6 @@
 package com.cove.user.services;
 
+import com.cove.user.annotations.ReadsTenantData;
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
 import com.cove.user.exception.UserNotFoundException;
@@ -12,14 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl extends TenantService implements StudentService {
     @Autowired
     private JpaStudentRepository studentRepository;
+
+    @PersistenceContext
+    public EntityManager entityManager;
 
     @Autowired
     private JpaClinicianRepository clinicianRepository;
@@ -30,6 +36,7 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @ReadsTenantData
     public List<StudentDTO> getAllStudents(){
         List<Student> studentList = studentRepository.findAll();
         List<StudentDTO> studentDTOS = new ArrayList<>();
@@ -37,6 +44,7 @@ public class StudentServiceImpl implements StudentService {
         return studentDTOS;
     }
 
+    @ReadsTenantData
     public List<StudentDTO> getAllStudentsForClinician(long clinicianId){
         //TODO handle null optional for clinician
         Clinician clinician = clinicianRepository.findById(clinicianId).get();
@@ -46,12 +54,14 @@ public class StudentServiceImpl implements StudentService {
         return studentDTOS;
     }
 
+    @ReadsTenantData
     public StudentDTO getStudentById(long studentId){
         //TODO: modify Optional student object for null objects
         Student student = studentRepository.findById(studentId).get();
         return modelMapper.map(student, StudentDTO.class);
     }
 
+    @ReadsTenantData
     public StudentDTO addStudent(StudentDTO studentDTO){
         studentDTO.setPassword(encoder.encode(studentDTO.getPassword()));
         Student student = modelMapper.map(studentDTO, Student.class);
@@ -59,6 +69,7 @@ public class StudentServiceImpl implements StudentService {
         return modelMapper.map(studentRepository.save(student), StudentDTO.class);
     }
 
+    @ReadsTenantData
     public StudentDTO updateStudentProfile(StudentDTO studentDTO) throws UserNotFoundException{
         Optional<Student> student = Optional.of(studentRepository.findByStudentNumber(studentDTO.getStudentNumber()));
         if (student.isPresent()){
@@ -75,6 +86,7 @@ public class StudentServiceImpl implements StudentService {
         throw new UserNotFoundException("Student not found " + studentDTO.getStudentId());
     }
 
+    @ReadsTenantData
     public StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) throws UserNotFoundException{
         Optional<Student> student = studentRepository.findById(studentId);
         if (student.isPresent()){
