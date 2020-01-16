@@ -3,12 +3,9 @@ package com.cove.user.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import org.hibernate.annotations.Loader;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,8 +14,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import static java.util.Objects.requireNonNull;
-
 @Data
 @Entity(name = "Student")
 @Table(name = "student")
@@ -26,13 +21,6 @@ import static java.util.Objects.requireNonNull;
         "UPDATE student " +
         "SET is_deleted = true " +
         "WHERE student_id = ?")
-@Loader(namedQuery = "findStudentById")
-//@NamedQuery(name = "findStudentById", query =
-//        "SELECT s " +
-//        "FROM Student s " +
-//        "WHERE " +
-//        "s.student_id = ?1 AND " +
-//        "s.is_deleted = false")
 @Where(clause = "is_deleted = false")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -91,7 +79,11 @@ public class Student extends TenantEntity implements Serializable {
     private String personalEmail;
     private String cellPhone;
     private String homePhone;
+
+    @Column(nullable = false)
     private boolean isDeleted;
+
+    @Column(nullable = false)
     private boolean isActive;
 
     // Required by Hibernate
