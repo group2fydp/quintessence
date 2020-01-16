@@ -10,6 +10,7 @@ import com.cove.user.repository.JpaClinicianRepository;
 import com.cove.user.repository.JpaStudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -94,5 +95,17 @@ public class StudentServiceImpl extends TenantService implements StudentService 
             return modelMapper.map(studentRepository.save(student.get()), StudentDTO.class);
         }
         throw new UserNotFoundException("Student not found " + studentId);
+    }
+
+
+    @ReadsTenantData
+    public void deleteStudent(long studentId){
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (student.isPresent()){
+            studentRepository.delete(student.get());
+        }
+        else {
+            throw new ResourceNotFoundException();
+        }
     }
 }

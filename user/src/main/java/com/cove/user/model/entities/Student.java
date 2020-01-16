@@ -3,6 +3,9 @@ package com.cove.user.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.hibernate.annotations.Loader;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,8 +20,20 @@ import java.util.Date;
 import static java.util.Objects.requireNonNull;
 
 @Data
-@Entity
+@Entity(name = "Student")
 @Table(name = "student")
+@SQLDelete(sql =
+        "UPDATE student " +
+        "SET is_deleted = true " +
+        "WHERE student_id = ?")
+@Loader(namedQuery = "findStudentById")
+//@NamedQuery(name = "findStudentById", query =
+//        "SELECT s " +
+//        "FROM Student s " +
+//        "WHERE " +
+//        "s.student_id = ?1 AND " +
+//        "s.is_deleted = false")
+@Where(clause = "is_deleted = false")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
@@ -95,6 +110,7 @@ public class Student extends TenantEntity implements Serializable {
 
     @PreRemove
     protected void preRemove(){
+        this.isDeleted = true;
         this.lastModifyDate = new Date();
     }
 }
