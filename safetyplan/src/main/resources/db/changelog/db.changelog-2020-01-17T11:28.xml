@@ -1,0 +1,113 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+    <changeSet id="1" author="tbunyadova">
+        <createTable tableName="safetyplan">
+            <column name="safetyplan_id" autoIncrement="true" startWith="10000000" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="student_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="clinician_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="version" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="coping_strategy">
+            <column name="coping_strategy_id" autoIncrement="true" startWith="10000000" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="safetyplan_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_coping_strategies" references="safetyplan(safetyplan_id)"/>
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="institution">
+            <column name="institution_id" autoIncrement="true" startWith="10000000" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="institution_location">
+            <column name="institution_location_id" autoIncrement="true" startWith="10000000" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="institution_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_institution_location" references="institution(institution_id)"/>
+            </column>
+            <column name="street_address" type="varchar(255)" />
+            <column name="city" type="varchar(128)"/>
+            <column name="postal_code" type="char(32)" />
+            <column name="province" type="char(16)" />
+            <column name="email" type="varchar(64)"/>
+            <column name="phone" type="varchar(64)"/>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="helpline">
+            <column name="helplline_id" autoIncrement="true" startWith="10000000" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="institution_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_helpline_institution" references="institution(institution_id)"/>
+            </column>
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
