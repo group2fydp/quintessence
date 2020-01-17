@@ -3,8 +3,6 @@ package com.cove.user.services;
 import com.cove.user.annotations.ReadsTenantData;
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
-import com.cove.user.exception.UserNotFoundException;
-import com.cove.user.model.entities.Clinician;
 import com.cove.user.model.entities.Student;
 import com.cove.user.repository.JpaClinicianRepository;
 import com.cove.user.repository.JpaStudentRepository;
@@ -15,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     }
 
     @ReadsTenantData
-    public StudentDTO updateStudent(StudentDTO studentDTO) throws UserNotFoundException{
+    public StudentDTO updateStudent(StudentDTO studentDTO) {
         Optional<Student> student = studentRepository.findById(studentDTO.getStudentId());
         if (student.isPresent()){
             Student studentModel = student.get();
@@ -76,17 +75,17 @@ public class StudentServiceImpl extends TenantService implements StudentService 
             studentModel.setHomePhone(studentDTO.getHomePhone());
             return modelMapper.map(studentRepository.save(studentModel), StudentDTO.class);
         }
-        throw new UserNotFoundException("Student not found " + studentDTO.getStudentId());
+        throw new EntityNotFoundException("Student not found " + studentDTO.getStudentId());
     }
 
     @ReadsTenantData
-    public StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) throws UserNotFoundException{
+    public StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) {
         Optional<Student> student = studentRepository.findById(studentId);
         if (student.isPresent()){
             //TODO add logic for clinician assignment
             return modelMapper.map(studentRepository.save(student.get()), StudentDTO.class);
         }
-        throw new UserNotFoundException("Student not found " + studentId);
+        throw new EntityNotFoundException("Student not found " + studentId);
     }
 
 

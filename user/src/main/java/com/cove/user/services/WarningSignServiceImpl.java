@@ -1,25 +1,25 @@
 package com.cove.user.services;
 
 import com.cove.user.dto.model.WarningSignDTO;
-import com.cove.user.exception.WarningSignNotFoundException;
 import com.cove.user.model.entities.Student;
 import com.cove.user.model.entities.WarningSign;
+import com.cove.user.repository.JpaStudentEntityRepository;
 import com.cove.user.repository.JpaStudentRepository;
-import com.cove.user.repository.JpaWarningSignRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class WarningSignImpl implements WarningSignService {
+public class WarningSignServiceImpl implements WarningSignService {
     @Autowired
     private JpaStudentRepository studentRepository;
 
     @Autowired
-    private JpaWarningSignRepository warningSignRepository;
+    private JpaStudentEntityRepository<WarningSign> warningSignRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -41,7 +41,7 @@ public class WarningSignImpl implements WarningSignService {
         return modelMapper.map(warningSignRepository.save(warningSign), WarningSignDTO.class);
     }
 
-    public WarningSignDTO updateWarningSign(WarningSignDTO warningSignDTO) throws WarningSignNotFoundException {
+    public WarningSignDTO updateWarningSign(WarningSignDTO warningSignDTO) {
         Optional<WarningSign> warningSign = warningSignRepository.findById(warningSignDTO.getWarningSignId());
         if (warningSign.isPresent()){
             WarningSign warningSignModel = warningSign.get();
@@ -50,7 +50,7 @@ public class WarningSignImpl implements WarningSignService {
             warningSignModel.setTitle(warningSignDTO.getTitle());
             return modelMapper.map(warningSignRepository.save(warningSignModel), WarningSignDTO.class);
         }
-        throw new WarningSignNotFoundException("Warning sign not found " + warningSignDTO.getWarningSignId());
+        throw new EntityNotFoundException("Warning sign not found " + warningSignDTO.getWarningSignId());
     }
 
     public void deleteWarningSign(long warningSignId){

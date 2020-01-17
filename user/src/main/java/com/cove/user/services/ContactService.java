@@ -1,7 +1,6 @@
 package com.cove.user.services;
 
 import com.cove.user.dto.model.ContactDTO;
-import com.cove.user.exception.ContactNotFoundException;
 
 import java.util.List;
 

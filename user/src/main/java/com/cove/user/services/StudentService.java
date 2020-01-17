@@ -2,7 +2,6 @@ package com.cove.user.services;
 
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
-import com.cove.user.exception.UserNotFoundException;
 
 import java.util.List;
 

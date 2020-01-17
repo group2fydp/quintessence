@@ -1,7 +1,6 @@
 package com.cove.user.services;
 
 import com.cove.user.dto.model.ContactDTO;
-import com.cove.user.exception.ContactNotFoundException;
 import com.cove.user.model.entities.Contact;
 import com.cove.user.model.entities.Student;
 import com.cove.user.repository.JpaContactRepository;
@@ -10,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +51,7 @@ public class ContactServiceImpl implements ContactService {
         return modelMapper.map(contactRepository.save(contact), ContactDTO.class);
     }
 
-    public ContactDTO updateContact(ContactDTO contactDTO) throws ContactNotFoundException {
+    public ContactDTO updateContact(ContactDTO contactDTO) {
         Optional<Contact> contact = contactRepository.findById(contactDTO.getStudentId());
         if (contact.isPresent()){
             Contact contactModel = contact.get();
@@ -59,7 +59,7 @@ public class ContactServiceImpl implements ContactService {
             //TODO needs more improvement
             return modelMapper.map(contactRepository.save(contactModel), ContactDTO.class);
         }
-        throw new ContactNotFoundException("Contact not found " + contactDTO.getContactId());
+        throw new EntityNotFoundException("Contact not found " + contactDTO.getContactId());
     }
 
     public void deleteContact(long contactId){

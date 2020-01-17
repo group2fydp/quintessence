@@ -3,7 +3,6 @@ package com.cove.user.services;
 import com.cove.user.annotations.ReadsTenantData;
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
-import com.cove.user.exception.UserNotFoundException;
 import com.cove.user.model.entities.Clinician;
 import com.cove.user.model.entities.Student;
 import com.cove.user.repository.JpaClinicianRepository;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,18 +32,18 @@ public class ClinicianServiceImpl implements ClinicianService {
     private BCryptPasswordEncoder encoder;
 
     @ReadsTenantData
-    public ClinicianDTO getClinicianById(long clinicianId) throws UserNotFoundException{
+    public ClinicianDTO getClinicianById(long clinicianId){
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianId);
         if (clinician.isPresent()){
             return modelMapper.map(clinician.get(), ClinicianDTO.class);
         }
         else {
-            throw new UserNotFoundException("Clinician not found " + clinicianId);
+            throw new EntityNotFoundException("Clinician not found " + clinicianId);
         }
     }
 
     @ReadsTenantData
-    public ClinicianDTO updateClinician(ClinicianDTO clinicianDTO) throws UserNotFoundException {
+    public ClinicianDTO updateClinician(ClinicianDTO clinicianDTO) {
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianDTO.getClinicianId());
         if (clinician.isPresent()){
             Clinician clinicianModel = clinician.get();
@@ -55,7 +55,7 @@ public class ClinicianServiceImpl implements ClinicianService {
             return modelMapper.map(clinicianRepository.save(clinicianModel), ClinicianDTO.class);
         }
         else {
-            throw new UserNotFoundException("Clinician not found " + clinicianDTO.getClinicianId());
+            throw new EntityNotFoundException("Clinician not found " + clinicianDTO.getClinicianId());
         }
     }
 

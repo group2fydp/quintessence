@@ -24,7 +24,7 @@ import java.util.Date;
                 "SET is_deleted = true " +
                 "WHERE contact_id = ?")
 @Where(clause = "is_deleted = false")
-public class Contact implements Serializable {
+public class Contact extends StudentEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long contactId;
@@ -39,29 +39,6 @@ public class Contact implements Serializable {
     @Column(nullable = false)
     private int type;
 
-    @Column(nullable = false)
-    private boolean isDeleted;
-
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    protected Date createDate;
-
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    protected Date lastModifyDate;
-
     //Required by Hibernate
     public Contact(){}
-
-    @PreUpdate
-    protected void preUpdate(){
-        this.lastModifyDate = new Date();
-    }
-
-    @PreRemove
-    protected void preRemove(){
-        this.isDeleted = true;
-        this.lastModifyDate = new Date();
-    }
-
 }

@@ -1,7 +1,6 @@
 package com.cove.user.services;
 
 import com.cove.user.dto.model.WarningSignDTO;
-import com.cove.user.exception.WarningSignNotFoundException;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.cove.user.controllers;
 
 import com.cove.user.dto.model.ClinicianDTO;
-import com.cove.user.exception.UserNotFoundException;
 import com.cove.user.services.ClinicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
