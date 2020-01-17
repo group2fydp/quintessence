@@ -37,6 +37,9 @@ public class Contact implements Serializable {
     private String name;
 
     @Column(nullable = false)
+    private int type;
+
+    @Column(nullable = false)
     private boolean isDeleted;
 
     @CreatedDate

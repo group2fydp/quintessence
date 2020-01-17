@@ -1,7 +1,11 @@
 package com.cove.user.controllers;
 
+import com.cove.user.dto.model.ContactDTO;
 import com.cove.user.dto.model.StudentDTO;
+import com.cove.user.exception.ContactNotFoundException;
 import com.cove.user.exception.UserNotFoundException;
+import com.cove.user.model.entities.Contact;
+import com.cove.user.services.ContactService;
 import com.cove.user.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +24,9 @@ public class StudentController {
     @Autowired(required = false)
     private StudentService studentService;
 
+    @Autowired(required = false)
+    private ContactService contactService;
+
     @Autowired
     private Environment environment;
 
@@ -31,6 +38,16 @@ public class StudentController {
     @RequestMapping("/{id}")
     public StudentDTO getStudent(@PathVariable final int id){
         return studentService.getStudentById(id);
+    }
+
+    @RequestMapping("/{id}/contacts")
+    public List<ContactDTO> getAllContactsForStudent(@PathVariable final int id){
+        return contactService.getAllContactsForStudent(id);
+    }
+
+    @RequestMapping("/{id}/contacts/{type}")
+    public List<ContactDTO> getAllContactsForStudentWithType(@PathVariable final int id, @PathVariable int type){
+        return contactService.getAllForStudentByContactType(id, type);
     }
 
     @RequestMapping("/all")
@@ -49,6 +66,16 @@ public class StudentController {
         return studentService.updateStudent(studentDTO);
     }
 
+    @PostMapping("/contacts/new")
+    public ContactDTO createContact(@RequestBody ContactDTO contactDTO) throws ContactNotFoundException {
+        return contactService.addContact(contactDTO);
+    }
+
+    @PutMapping("/contacts/update")
+    public ContactDTO updateContact(@RequestBody ContactDTO contactDTO) throws ContactNotFoundException {
+        return contactService.updateContact(contactDTO);
+    }
+
     @DeleteMapping("/delete/{id}")
     public Map<String, Boolean> deleteStudent(@PathVariable final int id){
         studentService.deleteStudent(id);
@@ -57,6 +84,12 @@ public class StudentController {
         return response;
     }
 
-
+    @DeleteMapping("/contacts/delete/{id}")
+    public Map<String, Boolean> deleteContact(@PathVariable final int id){
+        contactService.deleteContact(id);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", true);
+        return response;
+    }
 
 }
