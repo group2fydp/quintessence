@@ -2,11 +2,14 @@ package com.cove.user.controllers;
 
 import com.cove.user.dto.model.ContactDTO;
 import com.cove.user.dto.model.StudentDTO;
+import com.cove.user.dto.model.WarningSignDTO;
 import com.cove.user.exception.ContactNotFoundException;
 import com.cove.user.exception.UserNotFoundException;
+import com.cove.user.exception.WarningSignNotFoundException;
 import com.cove.user.model.entities.Contact;
 import com.cove.user.services.ContactService;
 import com.cove.user.services.StudentService;
+import com.cove.user.services.WarningSignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -26,6 +29,9 @@ public class StudentController {
 
     @Autowired(required = false)
     private ContactService contactService;
+
+    @Autowired(required = false)
+    private WarningSignService warningSignService;
 
     @Autowired
     private Environment environment;
@@ -49,6 +55,10 @@ public class StudentController {
     public List<ContactDTO> getAllContactsForStudentWithType(@PathVariable final int id, @PathVariable int type){
         return contactService.getAllForStudentByContactType(id, type);
     }
+    @RequestMapping("/{id}/warningSigns")
+    public List<WarningSignDTO> getAllWarningSignsForStudent(@PathVariable final int id){
+        return warningSignService.getAllWarningSignsForStudent(id);
+    }
 
     @RequestMapping("/all")
     public List<StudentDTO> getAllStudents(){
@@ -71,9 +81,19 @@ public class StudentController {
         return contactService.addContact(contactDTO);
     }
 
+    @PostMapping("/warningSigns/new")
+    public WarningSignDTO createWarningSign(@RequestBody WarningSignDTO warningSignDTO){
+        return warningSignService.addWarningSign(warningSignDTO);
+    }
+
     @PutMapping("/contacts/update")
     public ContactDTO updateContact(@RequestBody ContactDTO contactDTO) throws ContactNotFoundException {
         return contactService.updateContact(contactDTO);
+    }
+
+    @PutMapping("/warningSigns/update")
+    public WarningSignDTO updateWarningSign(@RequestBody WarningSignDTO warningSignDTO) throws WarningSignNotFoundException {
+        return warningSignService.updateWarningSign(warningSignDTO);
     }
 
     @DeleteMapping("/delete/{id}")
