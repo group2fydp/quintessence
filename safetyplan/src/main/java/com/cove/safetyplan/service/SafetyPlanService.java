@@ -9,11 +9,12 @@ public interface SafetyPlanService {
 
     //Safety plan related methods
     SafetyPlanDto createNewSafetyPlan(SafetyPlanDto safetyPlanDto);
-    SafetyPlanDto getSafetyPlan(Long safety_plan_id);
+    SafetyPlanDto getSafetyPlanByStudentId(long studentId);
     SafetyPlanDto updateClinicianForSafetyPlan(SafetyPlanDto safetyPlanDto);
+    List<SafetyPlanDto> getSafetyplansByClinicianId(long clinicianId);
 
     //Coping strategy related methods
-    List<CopingStrategyDto> addCopingStrategy(CopingStrategyDto copingStrategyDto);
+    List<CopingStrategyDto> addCopingStrategyToSafetyPlan(CopingStrategyDto copingStrategyDto);
     CopingStrategyDto updateCopingStrategy(CopingStrategyDto copingStrategyDto);
-    List<CopingStrategyDto> getCopingStrategies(Long safety_plan_id);
+    List<CopingStrategyDto> getCopingStrategies(long safetyplanId);
 }

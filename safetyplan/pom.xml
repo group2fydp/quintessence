@@ -17,6 +17,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+		<start-class>com.safetyplan.SafetyplanApplication</start-class>
 	</properties>
 
 	<dependencies>

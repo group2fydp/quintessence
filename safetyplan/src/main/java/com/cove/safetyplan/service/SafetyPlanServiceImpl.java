@@ -2,8 +2,10 @@ package com.cove.safetyplan.service;
 
 import com.cove.safetyplan.dto.model.CopingStrategyDto;
 import com.cove.safetyplan.dto.model.SafetyPlanDto;
-import com.cove.safetyplan.model.CopingStrategy;
-import com.cove.safetyplan.model.SafetyPlan;
+import com.cove.safetyplan.model.entities.CopingStrategy;
+import com.cove.safetyplan.model.entities.SafetyPlan;
+import com.cove.safetyplan.repository.JPACopingStrategyRepository;
+import com.cove.safetyplan.repository.JPASafetyPlanRepository;
 import com.netflix.discovery.EurekaClient;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 @Component
 public class SafetyPlanServiceImpl implements SafetyPlanService {
@@ -22,53 +24,56 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     @Autowired
     private EurekaClient eurekaClient;
 
+    @Autowired
+    private JPASafetyPlanRepository jpaSafetyPlanRepository;
+
+    @Autowired
+    private JPACopingStrategyRepository jpaCopingStrategyRepository;
+
     @Override
     public SafetyPlanDto createNewSafetyPlan(SafetyPlanDto safetyPlanDto){
+        SafetyPlan safetyPlanModel = modelMapper.map(safetyPlanDto, SafetyPlan.class);
+        safetyPlanModel.setVersion("1");
+        return modelMapper.map(jpaSafetyPlanRepository.save(safetyPlanModel), SafetyPlanDto.class);
 
-        //TODO: Check if safety plan exists in repo (check by student ID or clinician ID)
-        SafetyPlan safetyPlanModel = new SafetyPlan()
-                //TODO:Generate unique ID
-                .setClinicianId(safetyPlanDto.getClinicianId())
-                .setStudentId(safetyPlanDto.getStudentId());
-
-        return modelMapper.map(safetyPlanModel, SafetyPlanDto.class);
         //TODO:Implement exception handling
     }
 
     @Override
-    public SafetyPlanDto getSafetyPlan(Long safety_plan_id){
-        //TODO: Check that safety plan exists, get all members of it (warning signs, reasons to live, coping strategies, etc...)
-
-        Long clinician_id = new Random().nextLong();
-        Long student_id = new Random().nextLong();
-
-        SafetyPlan safetyPlanModel = new SafetyPlan()
-                .setClinicianId(clinician_id)
-                .setStudentId(student_id);
-
+    public SafetyPlanDto getSafetyPlanByStudentId(long studentId){
+        SafetyPlan safetyPlanModel = jpaSafetyPlanRepository.findByStudentId(studentId);
         return modelMapper.map(safetyPlanModel, SafetyPlanDto.class);
+    }
+
+    @Override
+    public List<SafetyPlanDto> getSafetyplansByClinicianId(long clinicianId){
+        List<SafetyPlan> safetyplans = jpaSafetyPlanRepository.findByClinicianId(clinicianId);
+        List<SafetyPlanDto> safetyPlanDtos = new ArrayList<>();
+        safetyplans.forEach(plan -> safetyPlanDtos.add(modelMapper.map(plan, SafetyPlanDto.class)));
+
+        return safetyPlanDtos;
     }
 
     @Override
     public SafetyPlanDto updateClinicianForSafetyPlan(SafetyPlanDto safetyPlanDto){
-        //TODO: Check that safety plan exists
-        SafetyPlan safetyPlanModel = new SafetyPlan()
-                .setClinicianId(safetyPlanDto.getClinicianId());
-
-        //TODO: Save safety plan
-
-        return modelMapper.map(safetyPlanModel, SafetyPlanDto.class);
+        Optional<SafetyPlan> safetyPlan = Optional.ofNullable(jpaSafetyPlanRepository.findByStudentId(safetyPlanDto.getStudentId()));
+        if(safetyPlan.isPresent()){
+            SafetyPlan safetyPlanModel = safetyPlan.get();
+            safetyPlanModel.setClinicianId(safetyPlanDto.getClinicianId());
+            return modelMapper.map(jpaSafetyPlanRepository.save(safetyPlanModel), SafetyPlanDto.class);
+        }
+        return new SafetyPlanDto();
     }
 
     // Coping Strategy methods
     @Override
-    public List<CopingStrategyDto> addCopingStrategy(CopingStrategyDto copingStrategyDto){
-        List<CopingStrategyDto> strategies = new ArrayList<>();
-
-        //TODO: Get all coping strategies for the safety plan
-        strategies.add(new CopingStrategyDto());
-
-        return strategies;
+    public List<CopingStrategyDto> addCopingStrategyToSafetyPlan(CopingStrategyDto copingStrategyDto){
+        CopingStrategy newCopingStrategy = modelMapper.map(copingStrategyDto, CopingStrategy.class);
+        jpaCopingStrategyRepository.save(newCopingStrategy);
+        List<CopingStrategyDto> strategyDtos = new ArrayList<>();
+        List<CopingStrategy> strategies = jpaCopingStrategyRepository.findBySafetyplanId(copingStrategyDto.getSafetyplanId());
+        strategies.forEach(strategy -> strategyDtos.add(modelMapper.map(strategy, CopingStrategyDto.class)));
+        return strategyDtos;
     }
 
     @Override
@@ -80,7 +85,7 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     }
 
     @Override
-    public List<CopingStrategyDto> getCopingStrategies(Long safety_plan_id){
+    public List<CopingStrategyDto> getCopingStrategies(long safety_plan_id){
 
         List<CopingStrategyDto> list = new ArrayList<>();
         CopingStrategyDto copingStrategyDto1 = new CopingStrategyDto()

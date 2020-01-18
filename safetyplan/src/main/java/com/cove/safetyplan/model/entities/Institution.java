@@ -1,4 +1,4 @@
-package com.cove.safetyplan.model;
+package com.cove.safetyplan.model.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

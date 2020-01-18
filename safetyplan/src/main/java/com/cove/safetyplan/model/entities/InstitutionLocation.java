@@ -1,4 +1,4 @@
-package com.cove.safetyplan.model;
+package com.cove.safetyplan.model.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +15,25 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name="coping_strategy")
-public class CopingStrategy {
+@Table(name="institution_location")
+public class InstitutionLocation {
     @Id
-    private Long  CopingStrategyId;
+    @GeneratedValue
+    private Long  institutionLocationId;
 
-    private Long safetyplanId;
+    private Long institutionId;
 
-    private String type;
+    private String streetAddress;
+
+    private String city;
+
+    private String province;
+
+    private String postalCode;
+
+    private String email;
+    
+    private String phone;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

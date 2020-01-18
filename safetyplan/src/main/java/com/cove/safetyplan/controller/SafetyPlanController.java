@@ -6,6 +6,7 @@ import com.cove.safetyplan.dto.response.Response;
 import com.cove.safetyplan.service.SafetyPlanService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import com.oracle.tools.packager.Log;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/safety_plan_api/v1/safetyPlan", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="/safety_plan_api/v1/safetyplan", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SafetyPlanController {
     @Autowired
     private SafetyPlanService safetyPlanService;
@@ -24,22 +25,33 @@ public class SafetyPlanController {
     //Safety plan endpoints
 
     /**
+     * TODO: Get user service endpoints to grab all of the safety plan data
      * Get all members of a safety plan
      * @param id {Safety plan id}
      * @return {Safety plan dto, list of coping strategy dtos, student dto, clinician dto, version, reasons to live, warning signs, etc}
      */
-    @GetMapping("/{id}")
-    public Response getSafetyPlan(@PathVariable Long id){
+//    @GetMapping("/{id}")
+//    public Response getSafetyPlan(@PathVariable Long id){
+//
+//        SafetyPlanDto safetyPlan = safetyPlanService.getSafetyPlan(id);
+//
+//        List<CopingStrategyDto> copingStrategyDtos = safetyPlanService.getCopingStrategies(id);
+//
+//        JSONObject response = new JSONObject();
+//        response.put("safetyPlan", safetyPlan);
+//        response.put("copingStrategies", copingStrategyDtos);
+//
+//        return Response.ok().setPayload(response);
+//    }
 
-        SafetyPlanDto safetyPlan = safetyPlanService.getSafetyPlan(id);
-
-        List<CopingStrategyDto> copingStrategyDtos = safetyPlanService.getCopingStrategies(id);
-
-        JSONObject response = new JSONObject();
-        response.put("safetyPlan", safetyPlan);
-        response.put("copingStrategies", copingStrategyDtos);
-
-        return Response.ok().setPayload(response);
+    /**
+     * Get safetyplan dto from student id
+     * @param id {Student id}
+     * @return {Safety plan dto}
+     */
+    @GetMapping("/student/{id}")
+    public Response getSafetyPlanByStudentId(@PathVariable Long id){
+        return Response.ok().setPayload(safetyPlanService.getSafetyPlanByStudentId(id));
     }
 
     /**
@@ -49,25 +61,28 @@ public class SafetyPlanController {
      * @return {Safety Plan Dto}
      */
     @PostMapping("/new")
-    public Response newSafetyPlan(@RequestBody @Valid SafetyPlanDto safetyPlanDto){
-
-        SafetyPlanDto response = safetyPlanService.createNewSafetyPlan(safetyPlanDto);
-
-        return Response.ok().setPayload(response);
+    public Response newSafetyPlan(@RequestBody SafetyPlanDto safetyPlanDto){
+        return Response.ok().setPayload(safetyPlanService.createNewSafetyPlan(safetyPlanDto));
     }
 
     /**
      * Update the clinician assigned to the safety plan
      * @param safetyPlanDto {The new safety plan dto}
-     * @return {clinitian Dto}
+     * @return {clinician Dto}
      */
-    @PutMapping("/{id}/clinician")
+    @PutMapping("/clinician")
     public Response updateClinicianForSafetyPlan(@RequestBody @Valid SafetyPlanDto safetyPlanDto){
-        //TODO: Check that safety plan exists, if clinician exists, update the clinician id, return
+        return Response.ok().setPayload(safetyPlanService.updateClinicianForSafetyPlan(safetyPlanDto));
+    }
 
-        SafetyPlanDto response = safetyPlanService.updateClinicianForSafetyPlan(safetyPlanDto);
-
-        return Response.ok().setPayload(response);
+    /**
+     *
+     * @param id {clinician id}
+     * @return {list of safety plan dtos}
+     */
+    @GetMapping("/clinician/{id}")
+    public Response getSafetyplansByClinicianId(@PathVariable long id){
+        return Response.ok().setPayload((safetyPlanService.getSafetyplansByClinicianId(id)));
     }
 
     /**
@@ -86,15 +101,11 @@ public class SafetyPlanController {
     /**
      * Add a new coping strategy
      * @param copingStrategyDto {Coping strategy}
-     * @param id {Safety plan id}
      * @return {List of safety plan coping strategies}
      */
-    @PostMapping("/{id}/copingStrategies")
-    public Response addCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto, @PathVariable Long id){
-
-        List<CopingStrategyDto> response =safetyPlanService.addCopingStrategy(copingStrategyDto);
-
-        return Response.ok().setPayload(response);
+    @PostMapping("/copingStrategies")
+    public Response addCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
+        return Response.ok().setPayload(safetyPlanService.addCopingStrategyToSafetyPlan(copingStrategyDto));
     }
 
     /**

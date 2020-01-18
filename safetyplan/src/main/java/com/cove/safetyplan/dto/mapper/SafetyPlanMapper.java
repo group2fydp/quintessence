@@ -1,7 +1,7 @@
 package com.cove.safetyplan.dto.mapper;
 
 import com.cove.safetyplan.dto.model.SafetyPlanDto;
-import com.cove.safetyplan.model.SafetyPlan;
+import com.cove.safetyplan.model.entities.SafetyPlan;
 
 public class SafetyPlanMapper {
     public static SafetyPlanDto toSafetyPlanDto(SafetyPlan safetyPlan) {

@@ -1,4 +1,4 @@
-package com.cove.safetyplan.model;
+package com.cove.safetyplan.model.entities;
 
 import lombok.*;
 
@@ -17,7 +17,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Table(name="safetyplan")
 public class SafetyPlan {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long  safetyplanId;
 
     private Long studentId;
@@ -35,5 +35,22 @@ public class SafetyPlan {
     private Date lastModifyDate;
 
     private boolean isDeleted;
+
+    @PrePersist
+    protected void prePersist(){
+        if (this.createDate == null) this.createDate = new Date();
+        if (this.lastModifyDate == null) this.lastModifyDate = new Date();
+    }
+
+    @PreUpdate
+    protected void preUpdate(){
+        this.lastModifyDate = new Date();
+    }
+
+    @PreRemove
+    protected void preRemove(){
+        this.isDeleted = true;
+        this.lastModifyDate = new Date();
+    }
 
 }
