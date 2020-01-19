@@ -7,6 +7,6 @@ import java.util.List;
 public interface WarningSignService {
     List<WarningSignDTO> getAllWarningSignsForStudent(long studentId);
     WarningSignDTO addWarningSign(WarningSignDTO warningSignDTO);
-    WarningSignDTO updateWarningSign(WarningSignDTO warningSignDTO) throws WarningSignNotFoundException;
+    WarningSignDTO updateWarningSign(WarningSignDTO warningSignDTO);
     void deleteWarningSign(long warningSignId);
 }

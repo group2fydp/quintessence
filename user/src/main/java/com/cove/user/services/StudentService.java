@@ -9,7 +9,7 @@ public interface StudentService {
     List<StudentDTO> getAllStudents();
     StudentDTO getStudentById(long studentId);
     StudentDTO addStudent(StudentDTO studentDTO);
-    StudentDTO updateStudent(StudentDTO studentDTO) throws UserNotFoundException;
-    StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) throws UserNotFoundException;
+    StudentDTO updateStudent(StudentDTO studentDTO);
+    StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO);
     void deleteStudent(long studentId);
 }

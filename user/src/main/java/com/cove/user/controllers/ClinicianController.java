@@ -26,7 +26,7 @@ public class ClinicianController {
     private ClinicianService clinicianService;
 
     @RequestMapping("/{id}")
-    public ClinicianDTO getClinician(@PathVariable final int id) throws UserNotFoundException {
+    public ClinicianDTO getClinician(@PathVariable final int id){
         return clinicianService.getClinicianById(id);
     }
 
@@ -36,7 +36,7 @@ public class ClinicianController {
     }
 
     @PutMapping("/update")
-    public ClinicianDTO updateClinician(@RequestBody ClinicianDTO clinicianDTO) throws UserNotFoundException{
+    public ClinicianDTO updateClinician(@RequestBody ClinicianDTO clinicianDTO) {
         return clinicianService.updateClinician(clinicianDTO);
     }
 

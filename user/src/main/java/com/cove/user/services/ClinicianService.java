@@ -6,8 +6,8 @@ import com.cove.user.dto.model.StudentDTO;
 import java.util.List;
 
 public interface ClinicianService {
-    ClinicianDTO getClinicianById(long clinicianId) throws UserNotFoundException;
-    ClinicianDTO updateClinician(ClinicianDTO clinicianDTO) throws UserNotFoundException;
+    ClinicianDTO getClinicianById(long clinicianId);
+    ClinicianDTO updateClinician(ClinicianDTO clinicianDTO);
     ClinicianDTO addClinician(ClinicianDTO clinicianDTO);
     List<StudentDTO> getAllStudentsForClinician(long clinicianId);
     void deleteClinician(long clicianId);
