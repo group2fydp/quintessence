@@ -1,11 +1,16 @@
 package com.cove.safetyplan.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,6 +21,14 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name="coping_strategy")
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@SQLDelete(sql =
+        "UPDATE coping_strategy " +
+                "SET is_deleted = true " +
+                "WHERE coping_strategy_id = ?")
+@Where(clause = "is_deleted = false")
 public class CopingStrategy {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

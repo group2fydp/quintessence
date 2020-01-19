@@ -3,6 +3,7 @@ package com.cove.safetyplan.controller;
 import com.cove.safetyplan.dto.model.CopingStrategyDto;
 import com.cove.safetyplan.dto.model.SafetyPlanDto;
 import com.cove.safetyplan.dto.response.Response;
+import com.cove.safetyplan.service.CopingStrategyService;
 import com.cove.safetyplan.service.SafetyPlanService;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
@@ -21,6 +22,9 @@ import java.util.List;
 public class SafetyPlanController {
     @Autowired
     private SafetyPlanService safetyPlanService;
+
+    @Autowired
+    private CopingStrategyService copingStrategyService;
 
     //Safety plan endpoints
 
@@ -105,7 +109,7 @@ public class SafetyPlanController {
      */
     @PostMapping("/copingStrategies")
     public Response addCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
-        return Response.ok().setPayload(safetyPlanService.addCopingStrategyToSafetyPlan(copingStrategyDto));
+        return Response.ok().setPayload(copingStrategyService.addCopingStrategyToSafetyPlan(copingStrategyDto));
     }
 
     /**
@@ -115,19 +119,17 @@ public class SafetyPlanController {
      */
     @PutMapping("/copingStrategies")
     public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
-
-        CopingStrategyDto response = safetyPlanService.updateCopingStrategy(copingStrategyDto);
-        return Response.ok();
+        return Response.ok().setPayload(copingStrategyService.updateCopingStrategy(copingStrategyDto));
     }
 
     /**
      * Get Coping strategy by id
-     * @param cs_id {Coping strategy id}
+     * @param id {Coping strategy id}
      * @return {Coping strategy dto}
      */
-    @GetMapping("/copingStrategies/{cs_id}")
-    public Response getCopingStrategy(@PathVariable Long cs_id){
-        return Response.ok();
+    @GetMapping("/copingStrategies/{id}")
+    public Response getCopingStrategy(@PathVariable Long id){
+        return Response.ok().setPayload(copingStrategyService.getCopingStrategy(id));
     }
 
     /**
@@ -137,27 +139,28 @@ public class SafetyPlanController {
      */
     @GetMapping("/{id}/copingStrategies")
     public Response getCopingStrategies(@PathVariable Long id){
-        return Response.ok();
+        return Response.ok().setPayload(copingStrategyService.getCopingStrategies(id));
     }
 
     /**
      * Remove a coping strategy from a safety plan
-     * @param id {Safety plan id}
-     * @param cs_id {Coping strategy id}
+     * @param id {Coping strategy id}
      * @return {Response code}
      */
-    @DeleteMapping("{id}/copingStrategies/{cs_id}")
-    public Response removeCopingStrategyFromSafetyPlan(@PathVariable Long id, @PathVariable Long cs_id){
+    @DeleteMapping("/copingStrategies/{id}")
+    public Response removeCopingStrategyFromSafetyPlan(@PathVariable Long id){
+        copingStrategyService.deleteCopingStrategy(id);
         return Response.ok();
     }
 
     /**
      * Remove all coping strategies from a safety plan
-     * @param id {Safety plan id}
-     * @return {Response code}
+     * @param id {safety plan id}
+     * @return {Response ok}
      */
-    @DeleteMapping("{id}/copingStrategies/")
-    public Response removeAllCopingStrategiesFromSafetyPlan(@PathVariable Long id){
+    @DeleteMapping("{id}/copingStrategies")
+    public Response removeAllCopingStrategiesFromSafetyPlan(@PathVariable long id){
+        copingStrategyService.deleteAllCopingStrategiesFromSafetyPlan(id);
         return Response.ok();
     }
 }

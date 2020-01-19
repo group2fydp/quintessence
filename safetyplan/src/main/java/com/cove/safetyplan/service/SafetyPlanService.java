@@ -12,9 +12,4 @@ public interface SafetyPlanService {
     SafetyPlanDto getSafetyPlanByStudentId(long studentId);
     SafetyPlanDto updateClinicianForSafetyPlan(SafetyPlanDto safetyPlanDto);
     List<SafetyPlanDto> getSafetyplansByClinicianId(long clinicianId);
-
-    //Coping strategy related methods
-    List<CopingStrategyDto> addCopingStrategyToSafetyPlan(CopingStrategyDto copingStrategyDto);
-    CopingStrategyDto updateCopingStrategy(CopingStrategyDto copingStrategyDto);
-    List<CopingStrategyDto> getCopingStrategies(long safetyplanId);
 }
