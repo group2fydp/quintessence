@@ -52,16 +52,10 @@ public class Clinician  extends TenantEntity implements Serializable {
     @Column(nullable = false)
     private int role;
 
-//    @CreatedBy
-//    protected String createdBy;
-
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
     protected Date createDate;
-
-//    @LastModifiedBy
-//    protected String lastModifiedBy;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -88,6 +82,7 @@ public class Clinician  extends TenantEntity implements Serializable {
 
     @PreRemove
     protected void preRemove(){
+        this.isDeleted = true;
         this.lastModifyDate = new Date();
     }
 

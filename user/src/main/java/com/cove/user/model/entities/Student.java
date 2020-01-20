@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Entity(name = "Student")
+@Entity
 @Table(name = "student")
 @SQLDelete(sql =
         "UPDATE student " +
@@ -28,7 +28,7 @@ import java.util.Date;
 public class Student extends TenantEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="student_id")
     private long studentId;
 

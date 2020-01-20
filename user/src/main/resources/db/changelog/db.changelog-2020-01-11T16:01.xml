@@ -43,7 +43,7 @@
             </column>
         </createTable>
         <createTable tableName="student">
-            <column autoIncrement="true" startWith="10000000" name="student_id" type="bigint">
+            <column  name="student_id"  autoIncrement="true" startWith="10000000" type="bigint">
                 <constraints primaryKey="true" />
             </column>
             <column name="tenant_id" type="bigint">
