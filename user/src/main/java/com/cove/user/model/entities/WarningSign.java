@@ -25,6 +25,7 @@ import java.io.Serializable;
 public class WarningSign implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "warning_sign_id")
     private long warningSignId;
 
     @ManyToOne

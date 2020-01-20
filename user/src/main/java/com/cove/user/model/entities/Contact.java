@@ -24,6 +24,7 @@ import java.io.Serializable;
 public class Contact implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "contact_id")
     private long contactId;
 
     @ManyToOne

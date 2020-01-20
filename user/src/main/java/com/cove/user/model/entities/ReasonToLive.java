@@ -24,6 +24,7 @@ import java.io.Serializable;
 public class ReasonToLive implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "reason_to_live_id")
     private long reasonToLiveId;
 
     @ManyToOne

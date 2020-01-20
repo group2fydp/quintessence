@@ -29,25 +29,29 @@ public class Student extends TenantEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="student_id")
     private long studentId;
 
     @ManyToOne
     @JoinColumn(name = "clinician_id")
     private Clinician clinician;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "safetyplan_id")
     private Long safetyplanId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "first_name")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "last_name")
     private String lastName;
 
+    @Column(name = "preferred_name")
     private String preferredName;
 
+    @Column(name = "gender")
     private String gender;
 
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
     @Column(nullable = false)
@@ -56,34 +60,35 @@ public class Student extends TenantEntity implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "student_number")
     private Long studentNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "student_email")
     private String studentEmail;
-
-//    @CreatedBy
-//    protected String createdBy;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
     protected Date createDate;
-
-//    @LastModifiedBy
-//    protected String lastModifiedBy;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modify_date")
     protected Date lastModifyDate;
 
+    @Column(name = "personal_email")
     private String personalEmail;
+
+    @Column(name = "cell_phone")
     private String cellPhone;
+
+    @Column(name = "home_phone")
     private String homePhone;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_deleted")
     private boolean isDeleted;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_active")
     private boolean isActive;
 
     // Required by Hibernate
