@@ -108,6 +108,7 @@ public class Student extends TenantEntity implements Serializable {
     @PreRemove
     protected void preRemove(){
         this.isDeleted = true;
+        this.isActive = false;
         this.lastModifyDate = new Date();
     }
 }

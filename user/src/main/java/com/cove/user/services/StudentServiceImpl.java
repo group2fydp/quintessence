@@ -2,6 +2,7 @@ package com.cove.user.services;
 
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
+import com.cove.user.model.entities.Clinician;
 import com.cove.user.model.entities.Student;
 import com.cove.user.repository.JpaClinicianRepository;
 import com.cove.user.repository.JpaStudentRepository;
@@ -43,8 +44,11 @@ public class StudentServiceImpl extends TenantService implements StudentService 
 
     public StudentDTO getStudentById(long studentId){
         //TODO: modify Optional student object for null objects
-        Student student = studentRepository.findById(studentId).get();
-        return modelMapper.map(student, StudentDTO.class);
+        if (studentRepository.findById(studentId).isPresent()){
+            Student student = studentRepository.findById(studentId).get();
+            return modelMapper.map(student, StudentDTO.class);
+        }
+        throw new EntityNotFoundException("Student not found " + studentId);
     }
 
     public StudentDTO addStudent(StudentDTO studentDTO){
@@ -58,6 +62,12 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         Optional<Student> student = studentRepository.findById(studentDTO.getStudentId());
         if (student.isPresent()){
             Student studentModel = student.get();
+            studentModel.setSafetyplanId(studentDTO.getSafetyplanId());
+            studentModel.setGender(studentDTO.getGender());
+            if (clinicianRepository.findById(studentDTO.getClinicianId()).isPresent()){
+                Clinician clinician = clinicianRepository.findById(studentDTO.getClinicianId()).get();
+                studentModel.setClinician(clinician);
+            }
             studentModel.setFirstName(studentDTO.getFirstName());
             studentModel.setLastName(studentDTO.getLastName());
             studentModel.setPreferredName(studentDTO.getPreferredName());
@@ -73,8 +83,10 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     public StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) {
         Optional<Student> student = studentRepository.findById(studentId);
         if (student.isPresent()){
-            //TODO add logic for clinician assignment
-            return modelMapper.map(studentRepository.save(student.get()), StudentDTO.class);
+            if (clinicianRepository.findById(clinicianDTO.getClinicianId()).isPresent()){
+                Clinician clinician = clinicianRepository.findById(clinicianDTO.getClinicianId()).get();
+                return modelMapper.map(studentRepository.save(student.get()), StudentDTO.class);
+            }
         }
         throw new EntityNotFoundException("Student not found " + studentId);
     }
