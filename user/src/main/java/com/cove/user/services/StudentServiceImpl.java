@@ -1,6 +1,5 @@
 package com.cove.user.services;
 
-import com.cove.user.annotations.ReadsTenantData;
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
 import com.cove.user.model.entities.Student;
@@ -24,36 +23,32 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     @Autowired
     private JpaStudentRepository studentRepository;
 
-    @PersistenceContext
-    public EntityManager entityManager;
-
     @Autowired
     private JpaClinicianRepository clinicianRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private BCryptPasswordEncoder encoder;
 
-    @Autowired
+    @Autowired(required = false)
     private ModelMapper modelMapper;
 
-    @ReadsTenantData
     public List<StudentDTO> getAllStudents(){
         List<Student> studentList = studentRepository.findAll();
         List<StudentDTO> studentDTOS = new ArrayList<>();
-        studentList.forEach(student -> studentDTOS.add(modelMapper.map(student, StudentDTO.class)));
+        if (!studentList.isEmpty()){
+            studentList.forEach(student -> studentDTOS.add(modelMapper.map(student, StudentDTO.class)));
+
+        }
         return studentDTOS;
     }
 
 
-
-    @ReadsTenantData
     public StudentDTO getStudentById(long studentId){
         //TODO: modify Optional student object for null objects
         Student student = studentRepository.findById(studentId).get();
         return modelMapper.map(student, StudentDTO.class);
     }
 
-    @ReadsTenantData
     public StudentDTO addStudent(StudentDTO studentDTO){
         studentDTO.setPassword(encoder.encode(studentDTO.getPassword()));
         Student student = modelMapper.map(studentDTO, Student.class);
@@ -61,7 +56,6 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         return modelMapper.map(studentRepository.save(student), StudentDTO.class);
     }
 
-    @ReadsTenantData
     public StudentDTO updateStudent(StudentDTO studentDTO) {
         Optional<Student> student = studentRepository.findById(studentDTO.getStudentId());
         if (student.isPresent()){
@@ -78,7 +72,6 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         throw new EntityNotFoundException("Student not found " + studentDTO.getStudentId());
     }
 
-    @ReadsTenantData
     public StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO) {
         Optional<Student> student = studentRepository.findById(studentId);
         if (student.isPresent()){
@@ -89,7 +82,6 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     }
 
 
-    @ReadsTenantData
     public void deleteStudent(long studentId){
         Optional<Student> student = studentRepository.findById(studentId);
         if (student.isPresent()){

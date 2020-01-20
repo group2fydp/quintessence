@@ -1,6 +1,5 @@
 package com.cove.user.services;
 
-import com.cove.user.annotations.ReadsTenantData;
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
 import com.cove.user.model.entities.Clinician;
@@ -11,13 +10,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClinicianServiceImpl implements ClinicianService {
+@Service
+public class ClinicianServiceImpl extends TenantService implements ClinicianService {
 
     @Autowired
     private JpaClinicianRepository clinicianRepository;
@@ -31,7 +32,6 @@ public class ClinicianServiceImpl implements ClinicianService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    @ReadsTenantData
     public ClinicianDTO getClinicianById(long clinicianId){
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianId);
         if (clinician.isPresent()){
@@ -42,7 +42,6 @@ public class ClinicianServiceImpl implements ClinicianService {
         }
     }
 
-    @ReadsTenantData
     public ClinicianDTO updateClinician(ClinicianDTO clinicianDTO) {
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianDTO.getClinicianId());
         if (clinician.isPresent()){
@@ -60,12 +59,11 @@ public class ClinicianServiceImpl implements ClinicianService {
     }
 
     public ClinicianDTO addClinician(ClinicianDTO clinicianDTO){
-        clinicianDTO.setPassword(encoder.encode(clinicianDTO.getPassword()));
+        clinicianDTO.setPassword(encoder.encode(String.valueOf(clinicianDTO.getPassword())));
         Clinician clinician = modelMapper.map(clinicianDTO, Clinician.class);
         return modelMapper.map(clinicianRepository.save(clinician), ClinicianDTO.class);
     }
 
-    @ReadsTenantData
     public List<StudentDTO> getAllStudentsForClinician(long clinicianId){
         //TODO handle null optional for clinician
         Clinician clinician = clinicianRepository.findById(clinicianId).get();
@@ -75,7 +73,6 @@ public class ClinicianServiceImpl implements ClinicianService {
         return studentDTOS;
     }
 
-    @ReadsTenantData
     public void deleteClinician(long clinicianId){
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianId);
         if (clinician.isPresent()){

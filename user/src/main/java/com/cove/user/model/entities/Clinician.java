@@ -28,20 +28,22 @@ public class Clinician  extends TenantEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "clinician_id")
     private long clinicianId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "first_name")
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "last_name")
     private String lastName;
 
+    @Column(name = "preferred_name")
     private String preferredName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "username")
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "password")
     private String password;
 
     private String email;
@@ -55,6 +57,7 @@ public class Clinician  extends TenantEntity implements Serializable {
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
     protected Date createDate;
 
 //    @LastModifiedBy
@@ -62,10 +65,12 @@ public class Clinician  extends TenantEntity implements Serializable {
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modify_date")
     protected Date lastModifyDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_deleted")
     private boolean isDeleted;
+
 
     // Required by Hibernate
     public Clinician(){}

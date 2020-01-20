@@ -23,5 +23,5 @@ public class ClinicianDTO {
     private String password;
     private String email;
     private String phone;
-    private String role;
+    private int role;
 }

@@ -8,12 +8,14 @@ import com.cove.user.repository.JpaStudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ContactServiceImpl implements ContactService {
     @Autowired
     private JpaContactRepository contactRepository;
@@ -21,7 +23,7 @@ public class ContactServiceImpl implements ContactService {
     @Autowired
     private JpaStudentRepository studentRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private ModelMapper modelMapper;
 
     public List<ContactDTO> getAllContactsForStudent(long studentId){
@@ -38,9 +40,8 @@ public class ContactServiceImpl implements ContactService {
         Optional<Student> student = studentRepository.findById(studentId);
         List<ContactDTO> contactDTOS = new ArrayList<>();
         if (student.isPresent()){
-            contactRepository.findAllByStudentByContactType(student.get(), contactType)
+            contactRepository.findAllByStudentAndType(student.get(), contactType)
                     .forEach(c -> contactDTOS.add(modelMapper.map(c, ContactDTO.class)));
-
         }
         return contactDTOS;
     }

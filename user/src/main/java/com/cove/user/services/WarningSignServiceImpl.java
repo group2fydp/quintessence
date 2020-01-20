@@ -3,25 +3,28 @@ package com.cove.user.services;
 import com.cove.user.dto.model.WarningSignDTO;
 import com.cove.user.model.entities.Student;
 import com.cove.user.model.entities.WarningSign;
-import com.cove.user.repository.JpaStudentEntityRepository;
 import com.cove.user.repository.JpaStudentRepository;
+import com.cove.user.repository.JpaWarningSignRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class WarningSignServiceImpl implements WarningSignService {
     @Autowired
     private JpaStudentRepository studentRepository;
 
     @Autowired
-    private JpaStudentEntityRepository<WarningSign> warningSignRepository;
+    private JpaWarningSignRepository warningSignRepository;
 
-    @Autowired
+
+    @Autowired(required = false)
     private ModelMapper modelMapper;
 
     public List<WarningSignDTO> getAllWarningSignsForStudent(long studentId){

@@ -3,25 +3,27 @@ package com.cove.user.services;
 import com.cove.user.dto.model.ReasonToLiveDTO;
 import com.cove.user.model.entities.ReasonToLive;
 import com.cove.user.model.entities.Student;
-import com.cove.user.repository.JpaStudentEntityRepository;
+import com.cove.user.repository.JpaReasonToLiveRepository;
 import com.cove.user.repository.JpaStudentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ReasonToLiveServiceImpl implements ReasonToLiveService {
     @Autowired
     private JpaStudentRepository studentRepository;
 
     @Autowired
-    private JpaStudentEntityRepository<ReasonToLive> reasonToLiveRepository;
+    private JpaReasonToLiveRepository reasonToLiveRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private ModelMapper modelMapper;
 
     public List<ReasonToLiveDTO> getAllReasonsToLiveForStudent(long studentId){

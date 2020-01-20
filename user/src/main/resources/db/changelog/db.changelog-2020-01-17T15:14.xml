@@ -10,6 +10,9 @@
             <column name="warning_sign_id" autoIncrement="true" startWith="10000000" type="bigint">
                 <constraints primaryKey="true" />
             </column>
+<!--            <column name="id" autoIncrement="true" startWith="10000000" type="bigint">-->
+<!--                <constraints primaryKey="true" />-->
+<!--            </column>-->
             <column name="student_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_warning_sign_student" references="student(student_id)"/>
             </column>

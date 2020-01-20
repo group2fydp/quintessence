@@ -9,39 +9,27 @@ import com.cove.user.services.ReasonToLiveService;
 import com.cove.user.services.StudentService;
 import com.cove.user.services.WarningSignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/student")
+@RequestMapping("/student")
 public class StudentController {
 
-    @Autowired(required = false)
+    @Autowired
     private StudentService studentService;
 
-    @Autowired(required = false)
+    @Autowired
     private ContactService contactService;
 
-    @Autowired(required = false)
+    @Autowired
     private WarningSignService warningSignService;
 
-    @Autowired(required = false)
-    private ReasonToLiveService reasonToLiveService;
-
     @Autowired
-    private Environment environment;
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
+    private ReasonToLiveService reasonToLiveService;
+    
     @RequestMapping("/all")
     public List<StudentDTO> getAllStudents(){
         List<StudentDTO> allStudents = studentService.getAllStudents();
