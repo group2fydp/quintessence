@@ -26,7 +26,7 @@ import java.util.Date;
 @Where(clause = "is_deleted = false")
 public class Contact implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contact_id")
     private long contactId;
 

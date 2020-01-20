@@ -96,12 +96,9 @@
         </createTable>
 
         <createTable tableName="contact">
-            <column autoIncrement="true" startWith="10000000" name="contact_id" type="bigint">
+            <column  name="contact_id" autoIncrement="true" startWith="10000000" type="bigint">
                 <constraints primaryKey="true" />
             </column>
-<!--            <column autoIncrement="true" startWith="10000000" name="id" type="bigint">-->
-<!--                <constraints primaryKey="true" />-->
-<!--            </column>-->
             <column name="student_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_contact_student" references="student(student_id)" />
             </column>

@@ -49,16 +49,18 @@ public class ContactServiceImpl implements ContactService {
     public ContactDTO addContact(ContactDTO contactDTO){
         Contact contact = modelMapper.map(contactDTO, Contact.class);
         contact.setStudent(studentRepository.findById(contactDTO.getStudentId()).get());
-        return modelMapper.map(contactRepository.save(contact), ContactDTO.class);
+        return modelMapper.map(contactRepository.save(contact), ContactDTO.class)
+                .setStudentId(contact.getStudent().getStudentId());
     }
 
     public ContactDTO updateContact(ContactDTO contactDTO) {
-        Optional<Contact> contact = contactRepository.findById(contactDTO.getStudentId());
+        Optional<Contact> contact = contactRepository.findById(contactDTO.getContactId());
         if (contact.isPresent()){
             Contact contactModel = contact.get();
             contactModel.setName(contactDTO.getName());
             //TODO needs more improvement
-            return modelMapper.map(contactRepository.save(contactModel), ContactDTO.class);
+            return modelMapper.map(contactRepository.save(contactModel), ContactDTO.class)
+                    .setStudentId(contactModel.getStudent().getStudentId());
         }
         throw new EntityNotFoundException("Contact not found " + contactDTO.getContactId());
     }
