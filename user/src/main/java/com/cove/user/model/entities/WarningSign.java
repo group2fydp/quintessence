@@ -27,7 +27,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class WarningSign implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "warning_sign_id")
     private long warningSignId;
 

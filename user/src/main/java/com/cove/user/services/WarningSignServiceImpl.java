@@ -41,7 +41,8 @@ public class WarningSignServiceImpl implements WarningSignService {
     public WarningSignDTO addWarningSign(WarningSignDTO warningSignDTO){
         WarningSign warningSign = modelMapper.map(warningSignDTO, WarningSign.class);
         warningSign.setStudent(studentRepository.findById(warningSignDTO.getStudentId()).get());
-        return modelMapper.map(warningSignRepository.save(warningSign), WarningSignDTO.class);
+        return modelMapper.map(warningSignRepository.save(warningSign), WarningSignDTO.class)
+                .setStudentId(warningSign.getStudent().getStudentId());
     }
 
     public WarningSignDTO updateWarningSign(WarningSignDTO warningSignDTO) {
@@ -51,7 +52,8 @@ public class WarningSignServiceImpl implements WarningSignService {
             warningSignModel.setCategory(warningSignDTO.getCategory());
             warningSignModel.setSeverity(warningSignDTO.getSeverity());
             warningSignModel.setTitle(warningSignDTO.getTitle());
-            return modelMapper.map(warningSignRepository.save(warningSignModel), WarningSignDTO.class);
+            return modelMapper.map(warningSignRepository.save(warningSignModel), WarningSignDTO.class)
+                    .setStudentId(warningSignModel.getStudent().getStudentId());
         }
         throw new EntityNotFoundException("Warning sign not found " + warningSignDTO.getWarningSignId());
     }

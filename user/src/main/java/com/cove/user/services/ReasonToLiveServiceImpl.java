@@ -39,7 +39,8 @@ public class ReasonToLiveServiceImpl implements ReasonToLiveService {
     public ReasonToLiveDTO addReasonToLive(ReasonToLiveDTO reasonToLiveDTO){
         ReasonToLive reasonToLive = modelMapper.map(reasonToLiveDTO, ReasonToLive.class);
         reasonToLive.setStudent(studentRepository.findById(reasonToLiveDTO.getStudentId()).get());
-        return modelMapper.map(reasonToLiveRepository.save(reasonToLive), ReasonToLiveDTO.class);
+        return modelMapper.map(reasonToLiveRepository.save(reasonToLive), ReasonToLiveDTO.class)
+                .setStudentId(reasonToLive.getStudent().getStudentId());
     }
 
     public ReasonToLiveDTO updateReasonToLive(ReasonToLiveDTO reasonToLiveDTO){
@@ -47,7 +48,8 @@ public class ReasonToLiveServiceImpl implements ReasonToLiveService {
         if (reasonToLive.isPresent()){
             ReasonToLive reasonToLiveModel = reasonToLive.get();
             reasonToLiveModel.setTitle(reasonToLiveDTO.getTitle());
-            return modelMapper.map(reasonToLiveRepository.save(reasonToLiveModel), ReasonToLiveDTO.class);
+            return modelMapper.map(reasonToLiveRepository.save(reasonToLiveModel), ReasonToLiveDTO.class)
+                    .setStudentId(reasonToLiveModel.getStudent().getStudentId());
         }
         throw new EntityNotFoundException("ReasonToLive entity not found" + reasonToLiveDTO.getReasonToLiveId());
     }
@@ -57,7 +59,9 @@ public class ReasonToLiveServiceImpl implements ReasonToLiveService {
         if (reasonToLive.isPresent()){
             reasonToLiveRepository.delete(reasonToLive.get());
         }
-        throw new ResourceNotFoundException();
+        else {
+            throw new ResourceNotFoundException();
+        }
     }
 
 }

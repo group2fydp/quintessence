@@ -26,7 +26,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class ReasonToLive implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reason_to_live_id")
     private long reasonToLiveId;
 

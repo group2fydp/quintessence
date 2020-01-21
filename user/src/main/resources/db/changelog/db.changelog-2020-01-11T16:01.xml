@@ -96,7 +96,7 @@
         </createTable>
 
         <createTable tableName="contact">
-            <column  name="contact_id" autoIncrement="true" startWith="10000000" type="bigint">
+            <column  name="contact_id" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" />
             </column>
             <column name="student_id" type="bigint">

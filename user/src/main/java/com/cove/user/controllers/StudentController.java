@@ -69,6 +69,7 @@ public class StudentController {
         return studentService.updateStudent(studentDTO);
     }
 
+    //TODO add bulk update/create for Contact, Warning Sign and Reason to Live entities
     @PostMapping("/contacts/new")
     public ContactDTO createContact(@RequestBody ContactDTO contactDTO) {
         return contactService.addContact(contactDTO);

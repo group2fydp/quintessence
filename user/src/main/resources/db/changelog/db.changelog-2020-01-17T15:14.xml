@@ -7,12 +7,9 @@
          http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
     <changeSet id="2" author="tbunyadova">
         <createTable tableName="warning_sign">
-            <column name="warning_sign_id" autoIncrement="true" startWith="10000000" type="bigint">
+            <column name="warning_sign_id" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" />
             </column>
-<!--            <column name="id" autoIncrement="true" startWith="10000000" type="bigint">-->
-<!--                <constraints primaryKey="true" />-->
-<!--            </column>-->
             <column name="student_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_warning_sign_student" references="student(student_id)"/>
             </column>
