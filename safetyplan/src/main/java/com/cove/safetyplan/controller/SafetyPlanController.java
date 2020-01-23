@@ -17,9 +17,6 @@ public class SafetyPlanController {
     @Autowired
     private SafetyPlanService safetyPlanService;
 
-    @Autowired
-    private CopingStrategyService copingStrategyService;
-
     //Safety plan endpoints
 
     /**
@@ -53,6 +50,16 @@ public class SafetyPlanController {
     }
 
     /**
+     *
+     * @param id {clinician id}
+     * @return {list of safety plan dtos}
+     */
+    @GetMapping("/clinician/{id}")
+    public Response getSafetyplansByClinicianId(@PathVariable long id){
+        return Response.ok().setPayload((safetyPlanService.getSafetyplansByClinicianId(id)));
+    }
+
+    /**
      * Create a new safety plan for a patient
      * This should happen automatically when a student profile is initiated.
      * @param safetyPlanDto {Valid safety plan request}
@@ -75,86 +82,12 @@ public class SafetyPlanController {
 
     /**
      *
-     * @param id {clinician id}
-     * @return {list of safety plan dtos}
-     */
-    @GetMapping("/clinician/{id}")
-    public Response getSafetyplansByClinicianId(@PathVariable long id){
-        return Response.ok().setPayload((safetyPlanService.getSafetyplansByClinicianId(id)));
-    }
-
-    /**
-     *
      * TODO:Figure out if this even valid
      * @param safetyPlanDto {Valid safety plan request}
      * @return {Success}
      */
     @DeleteMapping("/")
     public Response deleteSafetyPlan(@RequestBody @Valid SafetyPlanDto safetyPlanDto){
-        return Response.ok();
-    }
-
-    //Coping strategy endpoints
-
-    /**
-     * Add a new coping strategy
-     * @param copingStrategyDto {Coping strategy}
-     * @return {List of safety plan coping strategies}
-     */
-    @PostMapping("/copingStrategies")
-    public Response addCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
-        return Response.ok().setPayload(copingStrategyService.addCopingStrategyToSafetyPlan(copingStrategyDto));
-    }
-
-    /**
-     * Update a coping strategy
-     * @param copingStrategyDto {Coping strategy to update}
-     * @return {Coping strategy dto}
-     */
-    @PutMapping("/copingStrategies")
-    public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
-        return Response.ok().setPayload(copingStrategyService.updateCopingStrategy(copingStrategyDto));
-    }
-
-    /**
-     * Get Coping strategy by id
-     * @param id {Coping strategy id}
-     * @return {Coping strategy dto}
-     */
-    @GetMapping("/copingStrategies/{id}")
-    public Response getCopingStrategy(@PathVariable Long id){
-        return Response.ok().setPayload(copingStrategyService.getCopingStrategy(id));
-    }
-
-    /**
-     * Get all coping strategies for a safety plan
-     * @param id {Safety plan id}
-     * @return {List of coping strategy dtos}
-     */
-    @GetMapping("/{id}/copingStrategies")
-    public Response getCopingStrategies(@PathVariable Long id){
-        return Response.ok().setPayload(copingStrategyService.getCopingStrategies(id));
-    }
-
-    /**
-     * Remove a coping strategy from a safety plan
-     * @param id {Coping strategy id}
-     * @return {Response code}
-     */
-    @DeleteMapping("/copingStrategies/{id}")
-    public Response removeCopingStrategyFromSafetyPlan(@PathVariable Long id){
-        copingStrategyService.deleteCopingStrategy(id);
-        return Response.ok();
-    }
-
-    /**
-     * Remove all coping strategies from a safety plan
-     * @param id {safety plan id}
-     * @return {Response ok}
-     */
-    @DeleteMapping("{id}/copingStrategies")
-    public Response removeAllCopingStrategiesFromSafetyPlan(@PathVariable long id){
-        copingStrategyService.deleteAllCopingStrategiesFromSafetyPlan(id);
         return Response.ok();
     }
 }
