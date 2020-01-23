@@ -5,17 +5,11 @@ import com.cove.safetyplan.dto.model.SafetyPlanDto;
 import com.cove.safetyplan.dto.response.Response;
 import com.cove.safetyplan.service.CopingStrategyService;
 import com.cove.safetyplan.service.SafetyPlanService;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
-import com.oracle.tools.packager.Log;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/safety_plan_api/v1/safetyplan", produces = MediaType.APPLICATION_JSON_VALUE)
