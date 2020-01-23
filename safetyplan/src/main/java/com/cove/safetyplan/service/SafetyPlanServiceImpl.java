@@ -39,7 +39,6 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
 
     @Override
     public SafetyPlanDto createNewSafetyPlan(SafetyPlanDto safetyPlanDto){
-        //TODO:Validate that student and clinician exist
         SafetyPlan safetyPlanModel = modelMapper.map(safetyPlanDto, SafetyPlan.class);
         safetyPlanModel.setVersion("1");
         return modelMapper.map(jpaSafetyPlanRepository.save(safetyPlanModel), SafetyPlanDto.class);
@@ -47,7 +46,6 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
 
     @Override
     public SafetyPlanDto getSafetyPlanByStudentId(long studentId){
-        //TODO: Validate student id
         Optional<SafetyPlan> safetyPlan = Optional.ofNullable(jpaSafetyPlanRepository.findByStudentId(studentId));
         if(safetyPlan.isPresent()){
             return modelMapper.map(safetyPlan.get(), SafetyPlanDto.class);
@@ -57,7 +55,6 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
 
     @Override
     public List<SafetyPlanDto> getSafetyplansByClinicianId(long clinicianId){
-        //TODO: Validate clinician id
         List<SafetyPlan> safetyplans = jpaSafetyPlanRepository.findByClinicianId(clinicianId);
         List<SafetyPlanDto> safetyPlanDtos = new ArrayList<>();
         safetyplans.forEach(plan -> safetyPlanDtos.add(modelMapper.map(plan, SafetyPlanDto.class)));
