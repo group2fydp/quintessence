@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value="/safety_plan_api/v1/safetyplan", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SafetyPlanController {
     @Autowired
     private SafetyPlanService safetyPlanService;
