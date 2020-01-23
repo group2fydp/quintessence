@@ -1,40 +1,40 @@
 package com.cove.user.controllers;
 
 import com.cove.user.dto.model.ContactDTO;
+import com.cove.user.dto.model.ReasonToLiveDTO;
 import com.cove.user.dto.model.StudentDTO;
-import com.cove.user.exception.ContactNotFoundException;
-import com.cove.user.exception.UserNotFoundException;
-import com.cove.user.model.entities.Contact;
+import com.cove.user.dto.model.WarningSignDTO;
 import com.cove.user.services.ContactService;
+import com.cove.user.services.ReasonToLiveService;
 import com.cove.user.services.StudentService;
+import com.cove.user.services.WarningSignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/student")
+@RequestMapping("/student")
 public class StudentController {
 
-    @Autowired(required = false)
+    @Autowired
     private StudentService studentService;
 
-    @Autowired(required = false)
+    @Autowired
     private ContactService contactService;
 
     @Autowired
-    private Environment environment;
+    private WarningSignService warningSignService;
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    @Autowired
+    private ReasonToLiveService reasonToLiveService;
+    
+    @RequestMapping("/all")
+    public List<StudentDTO> getAllStudents(){
+        List<StudentDTO> allStudents = studentService.getAllStudents();
+        return allStudents;
     }
-
     @RequestMapping("/{id}")
     public StudentDTO getStudent(@PathVariable final int id){
         return studentService.getStudentById(id);
@@ -49,11 +49,14 @@ public class StudentController {
     public List<ContactDTO> getAllContactsForStudentWithType(@PathVariable final int id, @PathVariable int type){
         return contactService.getAllForStudentByContactType(id, type);
     }
+    @RequestMapping("/{id}/warningSigns")
+    public List<WarningSignDTO> getAllWarningSignsForStudent(@PathVariable final int id){
+        return warningSignService.getAllWarningSignsForStudent(id);
+    }
 
-    @RequestMapping("/all")
-    public List<StudentDTO> getAllStudents(){
-        List<StudentDTO> allStudents = studentService.getAllStudents();
-        return allStudents;
+    @RequestMapping("/{id}/reasonsToLive")
+    public List<ReasonToLiveDTO> getAllReasonsToLiveForStudent(@PathVariable final int id){
+        return reasonToLiveService.getAllReasonsToLiveForStudent(id);
     }
 
     @PostMapping("/new")
@@ -62,18 +65,39 @@ public class StudentController {
     }
 
     @PutMapping("/update")
-    public StudentDTO updateStudent(@RequestBody StudentDTO studentDTO) throws UserNotFoundException {
+    public StudentDTO updateStudent(@RequestBody StudentDTO studentDTO) {
         return studentService.updateStudent(studentDTO);
     }
 
+    //TODO add bulk update/create for Contact, Warning Sign and Reason to Live entities
     @PostMapping("/contacts/new")
-    public ContactDTO createContact(@RequestBody ContactDTO contactDTO) throws ContactNotFoundException {
+    public ContactDTO createContact(@RequestBody ContactDTO contactDTO) {
         return contactService.addContact(contactDTO);
     }
 
+    @PostMapping("/warningSigns/new")
+    public WarningSignDTO createWarningSign(@RequestBody WarningSignDTO warningSignDTO){
+        return warningSignService.addWarningSign(warningSignDTO);
+    }
+
+    @PostMapping("/reasonsToLive/new")
+    public ReasonToLiveDTO createReasonToLive(@RequestBody ReasonToLiveDTO reasonToLiveDTO){
+        return reasonToLiveService.addReasonToLive(reasonToLiveDTO);
+    }
+
     @PutMapping("/contacts/update")
-    public ContactDTO updateContact(@RequestBody ContactDTO contactDTO) throws ContactNotFoundException {
+    public ContactDTO updateContact(@RequestBody ContactDTO contactDTO) {
         return contactService.updateContact(contactDTO);
+    }
+
+    @PutMapping("/warningSigns/update")
+    public WarningSignDTO updateWarningSign(@RequestBody WarningSignDTO warningSignDTO) {
+        return warningSignService.updateWarningSign(warningSignDTO);
+    }
+
+    @PutMapping("/reasonsToLive/update")
+    public ReasonToLiveDTO updateReasonToLive(@RequestBody ReasonToLiveDTO reasonToLiveDTO){
+        return reasonToLiveService.updateReasonToLive(reasonToLiveDTO);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -92,4 +116,19 @@ public class StudentController {
         return response;
     }
 
+    @DeleteMapping("/warningSigns/delete/{id}")
+    public Map<String, Boolean> deleteWarningSign(@PathVariable final int id){
+        warningSignService.deleteWarningSign(id);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", true);
+        return response;
+    }
+
+    @DeleteMapping("/reasonsToLive/delete/{id}")
+    public Map<String, Boolean> deleteReasonToLive(@PathVariable final int id){
+        reasonToLiveService.deleteReasonToLive(id);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", true);
+        return response;
+    }
 }

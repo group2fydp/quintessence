@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+    <changeSet id="2" author="tbunyadova">
+        <createTable tableName="warning_sign">
+            <column name="warning_sign_id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="student_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_warning_sign_student" references="student(student_id)"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="category" type="char(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="severity" type="char(64)">
+                <constraints nullable="false" />
+            </column>
+            <column name="create_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_modify_date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

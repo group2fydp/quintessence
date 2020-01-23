@@ -10,61 +10,34 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@Entity
-@Table(name = "student")
+@Entity(name = "ReasonToLive")
+@Table(name = "reason_to_live")
 @SQLDelete(sql =
-        "UPDATE student " +
-        "SET is_deleted = true " +
-        "WHERE student_id = ?")
+        "UPDATE reason_to_live " +
+                "SET is_deleted = true " +
+                "WHERE reason_to_live_id = ?")
 @Where(clause = "is_deleted = false")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
-public class Student extends TenantEntity implements Serializable {
-
+public class ReasonToLive implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="student_id")
-    private long studentId;
+    @Column(name = "reason_to_live_id")
+    private long reasonToLiveId;
 
     @ManyToOne
-    @JoinColumn(name = "clinician_id")
-    private Clinician clinician;
-
-    @Column(nullable = false, name = "safetyplan_id")
-    private Long safetyplanId;
-
-    @Column(nullable = false, name = "first_name")
-    private String firstName;
-
-    @Column(nullable = false, name = "last_name")
-    private String lastName;
-
-    @Column(name = "preferred_name")
-    private String preferredName;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     @Column(nullable = false)
-    private String username;
+    private String title;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, name = "student_number")
-    private Long studentNumber;
-
-    @Column(nullable = false, name = "student_email")
-    private String studentEmail;
+    public ReasonToLive(){}
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -76,23 +49,8 @@ public class Student extends TenantEntity implements Serializable {
     @Column(name = "last_modify_date")
     protected Date lastModifyDate;
 
-    @Column(name = "personal_email")
-    private String personalEmail;
-
-    @Column(name = "cell_phone")
-    private String cellPhone;
-
-    @Column(name = "home_phone")
-    private String homePhone;
-
     @Column(nullable = false, name = "is_deleted")
     private boolean isDeleted;
-
-    @Column(nullable = false, name = "is_active")
-    private boolean isActive;
-
-    // Required by Hibernate
-    public Student(){}
 
     @PrePersist
     protected void prePersist(){
@@ -108,7 +66,6 @@ public class Student extends TenantEntity implements Serializable {
     @PreRemove
     protected void preRemove(){
         this.isDeleted = true;
-        this.isActive = false;
         this.lastModifyDate = new Date();
     }
 }

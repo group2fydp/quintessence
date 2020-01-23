@@ -13,15 +13,8 @@ import lombok.experimental.Accessors;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ClinicianDTO {
-    private long clinicianId;
-    private long tenantId;
-    private String firstName;
-    private String lastName;
-    private String preferredName;
-    private String username;
-    private String password;
-    private String email;
-    private String phone;
-    private int role;
+public class ReasonToLiveDTO {
+    private long reasonToLiveId;
+    private long studentId;
+    private String title;
 }

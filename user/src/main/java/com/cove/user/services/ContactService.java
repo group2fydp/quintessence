@@ -1,7 +1,6 @@
 package com.cove.user.services;
 
 import com.cove.user.dto.model.ContactDTO;
-import com.cove.user.exception.ContactNotFoundException;
 
 import java.util.List;
 
@@ -9,6 +8,6 @@ public interface ContactService {
     List<ContactDTO> getAllContactsForStudent(long studentId);
     List<ContactDTO> getAllForStudentByContactType(long studentId, int contactType);
     ContactDTO addContact(ContactDTO contactDTO);
-    ContactDTO updateContact(ContactDTO contactDTO) throws ContactNotFoundException;
+    ContactDTO updateContact(ContactDTO contactDTO);
     void deleteContact(long contactId);
 }
