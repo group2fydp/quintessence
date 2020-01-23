@@ -16,6 +16,7 @@ import java.util.Date;
 public class StudentDTO {
     private long studentId;
     private long clinicianId;
+    private long safetyplanId;
     private long tenantId;
     private String firstName;
     private String lastName;

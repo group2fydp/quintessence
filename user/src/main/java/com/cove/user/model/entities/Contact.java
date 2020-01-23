@@ -26,7 +26,8 @@ import java.util.Date;
 @Where(clause = "is_deleted = false")
 public class Contact implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "contact_id")
     private long contactId;
 
     @ManyToOne
@@ -39,19 +40,27 @@ public class Contact implements Serializable {
     @Column(nullable = false)
     private int type;
 
-    @Column(nullable = false)
-    private boolean isDeleted;
+    //Required by Hibernate
+    public Contact(){}
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
     protected Date createDate;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modify_date")
     protected Date lastModifyDate;
 
-    //Required by Hibernate
-    public Contact(){}
+    @Column(nullable = false, name = "is_deleted")
+    private boolean isDeleted;
+
+    @PrePersist
+    protected void prePersist(){
+        if (this.createDate == null) this.createDate = new Date();
+        if (this.lastModifyDate == null) this.lastModifyDate = new Date();
+    }
 
     @PreUpdate
     protected void preUpdate(){
@@ -63,5 +72,4 @@ public class Contact implements Serializable {
         this.isDeleted = true;
         this.lastModifyDate = new Date();
     }
-
 }
