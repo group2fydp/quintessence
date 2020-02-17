@@ -6,9 +6,13 @@ import com.cove.user.model.entities.Clinician;
 import com.cove.user.model.entities.Student;
 import com.cove.user.repository.JpaClinicianRepository;
 import com.cove.user.repository.JpaStudentRepository;
+import com.cove.user.security.ClinicianPrincipal;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ClinicianServiceImpl extends TenantService implements ClinicianService {
+public class ClinicianServiceImpl extends TenantService implements ClinicianService, UserDetailsService {
 
     @Autowired
     private JpaClinicianRepository clinicianRepository;
@@ -80,5 +84,16 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         } else {
             throw new ResourceNotFoundException();
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username){
+        Clinician clinician = clinicianRepository.findByUsername(username);
+        if (clinician == null){
+            throw new UsernameNotFoundException(username);
+        }
+
+        return new ClinicianPrincipal(clinician);
+
     }
 }
