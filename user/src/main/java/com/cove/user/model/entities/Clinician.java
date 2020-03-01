@@ -40,12 +40,6 @@ public class Clinician  extends TenantEntity implements Serializable {
     @Column(name = "preferred_name")
     private String preferredName;
 
-    @Column(nullable = false, name = "username")
-    private String username;
-
-    @Column(nullable = false, name = "password")
-    private String password;
-
     private String email;
     private String phone;
 

@@ -29,6 +29,11 @@ public class StudentController {
 
     @Autowired
     private ReasonToLiveService reasonToLiveService;
+
+    @RequestMapping("/hello")
+    public String hello(){
+        return "Hello world!";
+    }
     
     @RequestMapping("/all")
     public List<StudentDTO> getAllStudents(){

@@ -54,11 +54,7 @@ public class Student extends TenantEntity implements Serializable {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(nullable = false)
-    private String username;
 
-    @Column(nullable = false)
-    private String password;
 
     @Column(nullable = false, name = "student_number")
     private Long studentNumber;

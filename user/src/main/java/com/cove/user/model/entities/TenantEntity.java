@@ -22,4 +22,10 @@ public class TenantEntity {
 
     @Column(name = "tenant_id")
     Long tenantId;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
 }
