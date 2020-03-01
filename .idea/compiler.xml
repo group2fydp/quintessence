@@ -8,11 +8,15 @@
         <outputRelativeToContentRoot value="true" />
         <module name="discovery" />
         <module name="user" />
+        <module name="login" />
+        <module name="gateway" />
         <module name="safetyplan" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="discovery" target="1.8" />
+      <module name="gateway" target="1.8" />
+      <module name="login" target="1.8" />
       <module name="safetyplan" target="1.8" />
       <module name="user" target="1.8" />
     </bytecodeTargetLevel>
@@ -20,6 +24,8 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="login" options="-parameters" />
       <module name="safetyplan" options="-parameters" />
       <module name="user" options="-parameters" />
     </option>
