@@ -1,21 +1,23 @@
 package com.cove.gateway.configuration;
 
 import com.cove.gateway.security.jwt.JwtConfigurer;
+import com.cove.gateway.security.jwt.JwtTokenFilter;
 import com.cove.gateway.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.cove.gateway.constants.MicroServiceConstants.LOGIN_MICROSERVICE;
+import javax.servlet.http.HttpServletResponse;
 
+@EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
@@ -29,15 +31,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity
+//                .httpBasic().disable()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.POST,"/login/auth").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .apply(new JwtConfigurer(jwtTokenProvider));
+        httpSecurity.cors().and().csrf().disable();
+        httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .anonymous()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(
+                (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login/auth").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .apply(new JwtConfigurer(jwtTokenProvider));
+                .anyRequest().authenticated();
+//        httpSecurity.exceptionHandling().accessDeniedPage("/login/auth");
+        httpSecurity.apply(new JwtConfigurer(jwtTokenProvider));
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers(HttpMethod.POST, "/api/v1/login/auth");
+
     }
 }

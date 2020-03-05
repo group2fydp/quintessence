@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
-@RequestMapping("/auth")
 public class LoginController {
     private final LoginService loginService;
 
@@ -19,7 +18,8 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @PostMapping(value = WebResourceKeyConstants.LOGIN)
+    @PostMapping("/auth")
+    @ResponseBody
     public ResponseEntity<String> loginUser(@RequestBody LoginRequestDTO requestDTO, HttpServletRequest request) {
 
         String token = loginService.login(requestDTO, request);
