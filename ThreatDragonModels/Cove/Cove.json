@@ -1,0 +1,18 @@
+{
+  "summary": {
+    "title": "Cove",
+    "owner": "Essentia Health",
+    "description": "Backend application of cove app"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "Threat modelling v1",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "id": 0
+      }
+    ],
+    "reviewer": "Tamilla Bunyadova"
+  }
+}
