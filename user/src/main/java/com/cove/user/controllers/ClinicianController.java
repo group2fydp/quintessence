@@ -14,9 +14,9 @@ public class ClinicianController {
     @Autowired
     private ClinicianService clinicianService;
 
-    @RequestMapping("/{id}")
-    public ClinicianDTO getClinician(@PathVariable final int id){
-        return clinicianService.getClinicianById(id);
+    @RequestMapping("/{username}")
+    public ClinicianDTO getClinician(@PathVariable final String username){
+        return clinicianService.getClinicianByUsername(username);
     }
 
     @PostMapping("/new")

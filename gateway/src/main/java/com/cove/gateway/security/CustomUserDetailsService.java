@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserResponseDTO userResponseDTO = userInterface.fetchUserByUsername(username)
+        UserResponseDTO userResponseDTO = userInterface.fetchUserByUsername(username, String.valueOf(1))
                 .orElseThrow(() -> new UsernameNotFoundException("Username:" + username + " not found"));
         List<GrantedAuthority> grantedAuthorities = userResponseDTO.getRoles()
                 .stream().map(SimpleGrantedAuthority::new)

@@ -24,8 +24,8 @@ public class AuthenticationController {
     }
 
     //This is just for authenticating the user, different from getStudent or clinicianByUsername functionality
-    @GetMapping(value = "/fetch")
-    public ResponseEntity fetchUserByUsername(@PathVariable("username") String username) {
+    @GetMapping(value = "/fetch/{username}")
+    public ResponseEntity<?> fetchUserByUsername(@PathVariable String username) {
         return ResponseEntity.ok(authenticationService.fetchUserByUsername(username));
     }
 }

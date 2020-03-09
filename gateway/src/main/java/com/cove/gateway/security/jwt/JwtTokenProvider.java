@@ -26,7 +26,8 @@ import java.util.Objects;
 public class JwtTokenProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenProvider.class);
     private final JwtProperties jwtProperties;
-
+    public static final String JWT_SECRET_KEY = "QnuQblQWn8H9ggiwfGbCxpPA3gdY1oAe";
+    public static final String JWT_KEY = "QnuQblQWn8H9ggiwfGbCxpPA3gdY1oAe";
     @Autowired
     private final CustomUserDetailsService userDetailsService;
 
@@ -62,6 +63,7 @@ public class JwtTokenProvider {
 
         try {
             Jws<Claims> claims = Jwts.parser()
+                    .requireIssuer(JWT_KEY)
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
 
