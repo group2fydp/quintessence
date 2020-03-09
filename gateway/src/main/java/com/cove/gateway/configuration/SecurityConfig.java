@@ -1,7 +1,6 @@
 package com.cove.gateway.configuration;
 
 import com.cove.gateway.security.jwt.JwtConfigurer;
-import com.cove.gateway.security.jwt.JwtTokenFilter;
 import com.cove.gateway.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,18 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.POST,"/login/auth").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .apply(new JwtConfigurer(jwtTokenProvider));
         httpSecurity.cors().and().csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity.httpBasic().disable();
         httpSecurity
                 .anonymous()
                 .and()
@@ -50,8 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 (req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
                 .authorizeRequests()
+                .antMatchers("/api/v1/login/auth").permitAll()
                 .anyRequest().authenticated();
-//        httpSecurity.exceptionHandling().accessDeniedPage("/login/auth");
         httpSecurity.apply(new JwtConfigurer(jwtTokenProvider));
     }
 

@@ -15,7 +15,11 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
         System.out.println("In preHandle we are Intercepting the Request");
         System.out.println("____________________________________________");
         String requestURI = request.getRequestURI();
+        System.out.println("URL: " + request.getRequestURL().toString());
         String tenantID = request.getHeader("X-TenantID");
+        if (tenantID == null) {
+            tenantID = String.valueOf(1); //this is just for capstone, remove later
+        }
         System.out.println("RequestURI::" + requestURI +" || Search for X-TenantID  :: " + tenantID);
         System.out.println("____________________________________________");
         if (tenantID == null) {

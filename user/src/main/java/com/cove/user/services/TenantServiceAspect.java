@@ -22,7 +22,6 @@ public class TenantServiceAspect {
             "&& args(tenantService) " +
             "&& target(TenantService)")
     public void before(JoinPoint joinPoint, TenantService tenantService) throws Throwable{
-        System.out.println("Testing pointcut");
         Filter filter = tenantService.entityManager.unwrap(Session.class).enableFilter(TENANT_FILTER_NAME);
         filter.setParameter(TENANT_ID_PROPERTY_NAME, TenantContext.getCurrentTenant());
         filter.validate();

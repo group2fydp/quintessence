@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class LoginRequestDTO implements Serializable {
-    private String userCredential;
+    private String username;
     private String password;
+    private String type;
 }

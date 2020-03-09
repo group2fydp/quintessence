@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ClinicianService {
     ClinicianDTO getClinicianById(long clinicianId);
+    ClinicianDTO getClinicianByUsername(String username);
     ClinicianDTO updateClinician(ClinicianDTO clinicianDTO);
     ClinicianDTO addClinician(ClinicianDTO clinicianDTO);
     List<StudentDTO> getAllStudentsForClinician(long clinicianId);

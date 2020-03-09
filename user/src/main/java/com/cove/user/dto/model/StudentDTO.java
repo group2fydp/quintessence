@@ -30,4 +30,5 @@ public class StudentDTO {
     private String personalEmail;
     private String cellPhone;
     private String homePhone;
+    private int loginAttempt;
 }

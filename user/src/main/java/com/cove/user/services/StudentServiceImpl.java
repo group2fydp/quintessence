@@ -51,6 +51,14 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         throw new EntityNotFoundException("Student not found " + studentId);
     }
 
+    public StudentDTO getStudentByUsername(String username){
+        Student student = studentRepository.findByUsername(username);
+        if(student != null){
+            return modelMapper.map(student, StudentDTO.class);
+        }
+        throw new EntityNotFoundException("Student not found " + username);
+    }
+
     public StudentDTO addStudent(StudentDTO studentDTO){
         studentDTO.setPassword(encoder.encode(studentDTO.getPassword()));
         Student student = modelMapper.map(studentDTO, Student.class);

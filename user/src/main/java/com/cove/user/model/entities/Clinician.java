@@ -59,6 +59,8 @@ public class Clinician  extends TenantEntity implements Serializable {
     @Column(nullable = false, name = "is_deleted")
     private boolean isDeleted;
 
+    @Column(nullable = false, name = "login_attempt")
+    private int loginAttempt;
 
     // Required by Hibernate
     public Clinician(){}

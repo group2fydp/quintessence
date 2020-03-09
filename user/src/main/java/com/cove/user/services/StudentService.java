@@ -12,4 +12,5 @@ public interface StudentService {
     StudentDTO updateStudent(StudentDTO studentDTO);
     StudentDTO assignClinianByStudentId(long studentId, ClinicianDTO clinicianDTO);
     void deleteStudent(long studentId);
+    StudentDTO getStudentByUsername(String username);
 }

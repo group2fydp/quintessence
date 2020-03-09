@@ -12,4 +12,5 @@ public interface JpaStudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByClinician(Clinician clinician);
     Student findByStudentNumber(long studentNumber);
     Student findBySafetyplanId(long safetyPlanId);
+    Student findByUsername(String username);
 }
