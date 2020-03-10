@@ -32,7 +32,7 @@ import java.util.Date;
 public class CopingStrategy {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long  CopingStrategyId;
+    private Long copingStrategyId;
 
     private Long safetyplanId;
 
