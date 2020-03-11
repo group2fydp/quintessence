@@ -4,10 +4,11 @@ import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClinicianService {
     ClinicianDTO getClinicianById(long clinicianId);
-    ClinicianDTO getClinicianByUsername(String username);
+    Optional<ClinicianDTO> getClinicianByUsername(String username);
     ClinicianDTO updateClinician(ClinicianDTO clinicianDTO);
     ClinicianDTO addClinician(ClinicianDTO clinicianDTO);
     List<StudentDTO> getAllStudentsForClinician(long clinicianId);

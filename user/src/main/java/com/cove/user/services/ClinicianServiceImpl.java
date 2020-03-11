@@ -42,10 +42,10 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         }
     }
 
-    public ClinicianDTO getClinicianByUsername(String username){
-        Clinician clinician = clinicianRepository.findByUsername(username);
-        if(clinician != null){
-            return modelMapper.map(clinician, ClinicianDTO.class);
+    public Optional<ClinicianDTO> getClinicianByUsername(String username){
+        Optional<Clinician> clinician = clinicianRepository.findByUsername(username);
+        if(clinician.isPresent()){
+            return Optional.of(modelMapper.map(clinician.get(), ClinicianDTO.class));
         }
         else{
             throw new EntityNotFoundException("Clinician not found " + username);

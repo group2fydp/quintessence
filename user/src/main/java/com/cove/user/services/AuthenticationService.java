@@ -4,11 +4,13 @@ import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
 import com.cove.user.dto.model.UserRequestDTO;
 import com.cove.user.dto.model.UserResponseDTO;
+import com.cove.user.model.entities.Clinician;
 import com.cove.user.model.entities.TenantEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -20,7 +22,7 @@ public class AuthenticationService {
 
     public UserResponseDTO searchUser(UserRequestDTO userRequestDTO){
         if (userRequestDTO.getType().equals("CLINICIAN")){
-            return mapClinicianToResponseDTO(clinicianService.getClinicianByUsername(userRequestDTO.getUsername()));
+            return mapClinicianToResponseDTO(clinicianService.getClinicianByUsername(userRequestDTO.getUsername()).get());
         }
         else if (userRequestDTO.getType().equals("STUDENT")){
             return mapStudentToResponseDTO( studentService.getStudentByUsername(userRequestDTO.getUsername()));
@@ -32,7 +34,7 @@ public class AuthenticationService {
 
     public UserResponseDTO updateUser(UserRequestDTO userRequestDTO){
         if (userRequestDTO.getType().equals("CLINICIAN")){
-            ClinicianDTO clinicianDTO = clinicianService.getClinicianByUsername(userRequestDTO.getUsername());
+            ClinicianDTO clinicianDTO = clinicianService.getClinicianByUsername(userRequestDTO.getUsername()).get();
             clinicianDTO.setLoginAttempt(userRequestDTO.getLoginAttempt());
             return mapClinicianToResponseDTO(clinicianService.updateClinician(clinicianDTO));
         }
@@ -47,9 +49,16 @@ public class AuthenticationService {
     }
 
     public UserResponseDTO fetchUserByUsername(String username){
-        return clinicianService.getClinicianByUsername(username) != null ?
-                mapClinicianToResponseDTO(clinicianService.getClinicianByUsername(username)) :
-                mapStudentToResponseDTO(studentService.getStudentByUsername(username));
+        Optional<ClinicianDTO> clinicianDTO = clinicianService.getClinicianByUsername(username);
+        if (clinicianDTO.isPresent()){
+            return mapClinicianToResponseDTO(clinicianDTO.get());
+        }
+        else if (studentService.getStudentByUsername(username) != null){
+            return mapStudentToResponseDTO(studentService.getStudentByUsername(username));
+        }
+        else {
+            throw new EntityNotFoundException("User not found: " + username);
+        }
     }
 
     private UserResponseDTO mapClinicianToResponseDTO(ClinicianDTO clinicianDTO){
