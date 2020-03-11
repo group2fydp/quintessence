@@ -47,9 +47,7 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         if(clinician.isPresent()){
             return Optional.of(modelMapper.map(clinician.get(), ClinicianDTO.class));
         }
-        else{
-            throw new EntityNotFoundException("Clinician not found " + username);
-        }
+        return Optional.empty();
     }
 
     public ClinicianDTO updateClinician(ClinicianDTO clinicianDTO) {
