@@ -5,7 +5,7 @@ import com.cove.safetyplan.exception.CoveException;
 import com.cove.safetyplan.exception.EntityType;
 import com.cove.safetyplan.exception.ExceptionType;
 import com.cove.safetyplan.model.entities.CopingStrategy;
-import com.cove.safetyplan.model.entities.SafetyPlan;
+import com.cove.safetyplan.model.entities.Safetyplan;
 import com.cove.safetyplan.repository.JPACopingStrategyRepository;
 import com.cove.safetyplan.repository.JPASafetyPlanRepository;
 import com.netflix.discovery.EurekaClient;
@@ -36,7 +36,7 @@ public class CopingStrategyServiceImpl implements CopingStrategyService {
 
     @Override
     public List<CopingStrategyDto> addCopingStrategyToSafetyPlan(CopingStrategyDto copingStrategyDto){
-        Optional<SafetyPlan> safetyPlan = jpaSafetyPlanRepository.findById(copingStrategyDto.getSafetyplanId());
+        Optional<Safetyplan> safetyPlan = jpaSafetyPlanRepository.findById(copingStrategyDto.getSafetyplanId());
         if(safetyPlan.isPresent()){
             CopingStrategy newCopingStrategy = modelMapper.map(copingStrategyDto, CopingStrategy.class);
             jpaCopingStrategyRepository.save(newCopingStrategy);
@@ -58,7 +58,7 @@ public class CopingStrategyServiceImpl implements CopingStrategyService {
 
     @Override
     public List<CopingStrategyDto> getCopingStrategies(long safetyplanId){
-        Optional<SafetyPlan> safetyPlan = jpaSafetyPlanRepository.findById(safetyplanId);
+        Optional<Safetyplan> safetyPlan = jpaSafetyPlanRepository.findById(safetyplanId);
         if(safetyPlan.isPresent()){
             List<CopingStrategyDto> copingStrategyDtos = new ArrayList<>();
             jpaCopingStrategyRepository.findBySafetyplanId(safetyplanId)
@@ -88,7 +88,7 @@ public class CopingStrategyServiceImpl implements CopingStrategyService {
 
     @Override
     public void deleteAllCopingStrategiesFromSafetyPlan(long safetyplanId){
-        Optional<SafetyPlan> safetyPlan = jpaSafetyPlanRepository.findById(safetyplanId);
+        Optional<Safetyplan> safetyPlan = jpaSafetyPlanRepository.findById(safetyplanId);
         if(safetyPlan.isPresent()){
             List<CopingStrategy> copingStrategies = jpaCopingStrategyRepository.findBySafetyplanId(safetyplanId);
 

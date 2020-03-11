@@ -52,6 +52,7 @@ public class WarningSignServiceImpl implements WarningSignService {
             warningSignModel.setCategory(warningSignDTO.getCategory());
             warningSignModel.setSeverity(warningSignDTO.getSeverity());
             warningSignModel.setTitle(warningSignDTO.getTitle());
+            warningSignModel.setDescription(warningSignDTO.getDescription());
             return modelMapper.map(warningSignRepository.save(warningSignModel), WarningSignDTO.class)
                     .setStudentId(warningSignModel.getStudent().getStudentId());
         }

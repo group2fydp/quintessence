@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name="safetyplan")
-public class SafetyPlan {
+public class Safetyplan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  safetyplanId;

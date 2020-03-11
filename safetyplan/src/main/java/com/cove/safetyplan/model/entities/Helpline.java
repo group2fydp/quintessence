@@ -18,10 +18,10 @@ import java.util.Date;
 @Table(name="helpline")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class HelpLine {
+public class Helpline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  helpLineId;
+    private Long helplineId;
 
     private Long institutionId;
 
