@@ -90,7 +90,7 @@
             </column>
         </createTable>
         <createTable tableName="helpline">
-            <column name="helplline_id" autoIncrement="true" startWith="10000000" type="bigint">
+            <column name="helpline_id" autoIncrement="true" startWith="10000000" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
             <column name="institution_id" type="bigint">

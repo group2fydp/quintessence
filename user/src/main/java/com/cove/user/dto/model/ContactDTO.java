@@ -18,4 +18,8 @@ public class ContactDTO {
     private String name;
     private int type;
     private long studentId;
+    private String homePhone;
+    private String cellPhone;
+    private String email;
+    private String textMsg;
 }

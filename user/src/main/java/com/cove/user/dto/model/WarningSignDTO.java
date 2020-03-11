@@ -17,6 +17,7 @@ public class WarningSignDTO {
     private long warningSignId;
     private long studentId;
     private String title;
+    private String description;
     private String severity;
     private String category;
 }

@@ -40,7 +40,6 @@ public class SafetyPlanServiceImpl implements SafetyPlanService {
     @Override
     public SafetyPlanDto createNewSafetyPlan(SafetyPlanDto safetyPlanDto){
         SafetyPlan safetyPlanModel = modelMapper.map(safetyPlanDto, SafetyPlan.class);
-        safetyPlanModel.setVersion("1");
         return modelMapper.map(jpaSafetyPlanRepository.save(safetyPlanModel), SafetyPlanDto.class);
     }
 

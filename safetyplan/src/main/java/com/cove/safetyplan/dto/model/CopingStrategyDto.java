@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CopingStrategyDto {
 
-    private Long CopingStrategyId;
+    private Long copingStrategyId;
 
     private Long safetyplanId;
 

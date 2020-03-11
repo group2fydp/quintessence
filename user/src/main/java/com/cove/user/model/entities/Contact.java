@@ -42,6 +42,14 @@ public class Contact implements Serializable {
     @Column(nullable = false)
     private int type;
 
+    private String homePhone;
+
+    private String cellPhone;
+
+    private String email;
+
+    private String textMsg;
+
     //Required by Hibernate
     public Contact(){}
 

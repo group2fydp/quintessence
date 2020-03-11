@@ -46,6 +46,9 @@ public class WarningSign implements Serializable {
     @Column(nullable = false)
     private String category;
 
+    @Column(nullable = false)
+    private String description;
+
     public WarningSign(){}
 
     @CreatedDate

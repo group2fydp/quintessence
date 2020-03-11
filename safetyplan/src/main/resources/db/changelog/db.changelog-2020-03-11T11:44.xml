@@ -5,10 +5,7 @@
         xmlns:pro="http://www.liquibase.org/xml/ns/pro"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
          http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
-    <include file="db/changelog/db.changelog-2020-01-11T16:01.xml"/>
-    <include file="db/changelog/db.changelog-2020-01-17T15:14.xml"/>
-    <include file="db/changelog/db.changelog-2020-01-17T18:58.xml"/>
-    <include file="db/changelog/db.changelog-2020-03-08T23:13.xml"/>
-    <include file="db/changelog/db.changelog-2020-03-10T11:07.xml"/>
-    <include file="db/changelog/db.changelog-2020-03-11T09:29.xml"/>
+    <changeSet id="20200310T1144" author="tbunyadova">
+        <loadData tableName="safetyplan" separator="," primaryKey="safetyplan_id" file="../migrations/safetyplanData.csv" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,9 +18,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Accessors(chain = true)
-@NoArgsConstructor
-@ToString
+@Audited
 @Entity
 @Table(name="coping_strategy")
 @EntityListeners(AuditingEntityListener.class)
@@ -31,12 +31,25 @@ import java.util.Date;
 @Where(clause = "is_deleted = false")
 public class CopingStrategy {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long copingStrategyId;
 
     private Long safetyplanId;
 
     private String type;
+
+    private String title;
+
+    @Column(nullable = false)
+    private String description;
+
+    private String instructions;
+
+    private String videoUrl;
+    private String videoType;
+    private String externalApp;
+    private String externalAppType;
+    private String externalAppCredential;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

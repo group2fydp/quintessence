@@ -1,5 +1,7 @@
 package com.cove.safetyplan.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,14 +13,13 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Accessors(chain = true)
-@NoArgsConstructor
-@ToString
 @Entity
 @Table(name="institution_location")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class InstitutionLocation {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  institutionLocationId;
 
     private Long institutionId;

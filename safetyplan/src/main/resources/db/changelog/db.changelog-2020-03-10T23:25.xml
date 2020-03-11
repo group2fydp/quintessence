@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+    <changeSet id="20200310T2325" author="tbunyadova">
+        <addColumn tableName="coping_strategy">
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="instructions" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="video_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="video_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="external_app" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="external_app_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="external_app_credential" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="helpline">
+            <column name="main_phone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="main_email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="address" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="city" type="varchar(128)">
+                <constraints nullable="true" />
+            </column>
+            <column name="province" type="varchar(32)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <dropColumn tableName="safetyplan">
+            <column name="version" type="int"/>
+        </dropColumn>
+    </changeSet>
+</databaseChangeLog>

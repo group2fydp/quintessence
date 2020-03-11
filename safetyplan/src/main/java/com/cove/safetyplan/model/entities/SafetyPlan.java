@@ -1,30 +1,33 @@
 package com.cove.safetyplan.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
 import lombok.experimental.Accessors;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
-@Accessors(chain = true)
-@NoArgsConstructor
-@ToString
+@Audited
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name="safetyplan")
 public class SafetyPlan {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  safetyplanId;
 
     private Long studentId;
 
     private Long clinicianId;
-
-    private String version;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
