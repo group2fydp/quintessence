@@ -3,9 +3,6 @@ package com.cove.safetyplan.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -14,31 +11,19 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name="institution_location")
+@Table(name="mental_health_service")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class InstitutionLocation {
+public class MentalHealthService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  institutionLocationId;
+    private long mentalHealthServiceId;
 
-    @ManyToOne
-    @JoinColumn(name = "institution_id")
-    private Institution institution;
+    private String name;
 
-    private Long institutionId;
+    private boolean isDeleted;
 
-    private String streetAddress;
 
-    private String city;
-
-    private String province;
-
-    private String postalCode;
-
-    private String email;
-    
-    private String phone;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -47,6 +32,4 @@ public class InstitutionLocation {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifyDate;
-
-    private boolean isDeleted;
 }

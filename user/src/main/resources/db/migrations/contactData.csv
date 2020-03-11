@@ -1,3 +1,3 @@
 "student_id","name","type","home_phone","cell_phone","email","text_msg","create_date","last_modify_date","is_deleted"
-10000000,"Mom",1,,"5196575287","janeDoe@gmail.com","Call me when you get this message!","2020-03-10 13:59:21","2020-03-10 13:59:21",0
-10000000,"Jeff Young",2,,"5196575287","jeffYoung@gmail.com","Call me when you get this message!","2020-03-10 13:59:21","2020-03-10 13:59:21",0
+10000000,"Mom",1,"","5196575287","janeDoe@gmail.com","Call me when you get this message!","2020-03-10 13:59:21","2020-03-10 13:59:21",0
+10000000,"Jeff Young",2,"","5196575287","jeffYoung@gmail.com","Call me when you get this message!","2020-03-10 13:59:21","2020-03-10 13:59:21",0

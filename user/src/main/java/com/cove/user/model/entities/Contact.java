@@ -3,6 +3,8 @@ package com.cove.user.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
@@ -14,7 +16,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Audited
 @Table(name = "contact")
@@ -42,12 +45,16 @@ public class Contact implements Serializable {
     @Column(nullable = false)
     private int type;
 
+    @Column(name = "home_phone")
     private String homePhone;
 
+    @Column(name = "cell_phone")
     private String cellPhone;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "text_msg")
     private String textMsg;
 
     //Required by Hibernate

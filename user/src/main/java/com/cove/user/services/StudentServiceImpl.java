@@ -70,19 +70,6 @@ public class StudentServiceImpl extends TenantService implements StudentService 
 
     };
 
-    PropertyMap<Student, StudentDTO> customePropertyMap = new PropertyMap<Student, StudentDTO>() {
-        @Override
-        protected void configure() {
-            Program program = programRepository.findById(source.getProgram().getProgramId()).get();
-            Faculty faculty = facultyRepository.findById(program.getFaculty().getFacultyId()).get();
-            School school = schoolRepository.findById(faculty.getSchool().getSchoolId()).get();
-
-            map().setProgramName(program.getName());
-            map().setFacultyName(program.getName());
-            map().setSchoolName(program.getName());
-        }
-    };
-
     public List<StudentDTO> getAllStudents(){
         List<Student> studentList = studentRepository.findAll();
         List<StudentDTO> studentDTOS = new ArrayList<>();
