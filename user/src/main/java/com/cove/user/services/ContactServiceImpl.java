@@ -45,6 +45,9 @@ public class ContactServiceImpl implements ContactService {
 
     public List<ContactDTO> getAllContactsForStudent(long studentId){
         Optional<Student> student = studentRepository.findById(studentId);
+        if (modelMapper.getTypeMaps().isEmpty()){
+            modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
+        }
         List<ContactDTO> contactDTOS = new ArrayList<>();
         modelMapper.addConverter(customContactConverter, Contact.class, ContactDTO.class);
         if (student.isPresent()){
@@ -57,7 +60,9 @@ public class ContactServiceImpl implements ContactService {
     public List<ContactDTO> getAllForStudentByContactType(long studentId, int contactType){
         Optional<Student> student = studentRepository.findById(studentId);
         List<ContactDTO> contactDTOS = new ArrayList<>();
-        modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
+        if (modelMapper.getTypeMaps().isEmpty()){
+            modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
+        }
         if (student.isPresent()){
             contactRepository.findAllByStudentAndType(student.get(), contactType)
                     .forEach(c -> contactDTOS.add(modelMapper.map(c, ContactDTO.class)));
@@ -66,16 +71,18 @@ public class ContactServiceImpl implements ContactService {
     }
 
     public ContactDTO addContact(ContactDTO contactDTO){
-        modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
-        Contact contact = modelMapper.map(contactDTO, Contact.class);
+        if (modelMapper.getTypeMaps().isEmpty()){
+            modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
+        }        Contact contact = modelMapper.map(contactDTO, Contact.class);
         contact.setStudent(studentRepository.findById(contactDTO.getStudentId()).get());
         return modelMapper.map(contactRepository.save(contact), ContactDTO.class)
                 .setStudentId(contact.getStudent().getStudentId());
     }
 
     public ContactDTO updateContact(ContactDTO contactDTO) {
-        modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
-        Optional<Contact> contact = contactRepository.findById(contactDTO.getContactId());
+        if (modelMapper.getTypeMaps().isEmpty()){
+            modelMapper.createTypeMap(Contact.class, ContactDTO.class).setConverter(customContactConverter);
+        }        Optional<Contact> contact = contactRepository.findById(contactDTO.getContactId());
         if (contact.isPresent()){
             Contact contactModel = contact.get();
             contactModel.setName(contactDTO.getName());

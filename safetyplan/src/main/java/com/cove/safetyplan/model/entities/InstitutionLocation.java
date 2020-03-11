@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,8 +27,6 @@ public class InstitutionLocation {
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
-    private Long institutionId;
-
     private String streetAddress;
 
     private String city;
@@ -39,6 +38,10 @@ public class InstitutionLocation {
     private String email;
     
     private String phone;
+
+    @OneToMany
+    @JoinColumn(name="mental_health_service_id")
+    private List<MentalHealthService> services;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

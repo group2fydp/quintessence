@@ -23,7 +23,9 @@ public class MentalHealthService {
 
     private boolean isDeleted;
 
-
+    @ManyToOne
+    @JoinColumn(name = "institution_location_id")
+    private InstitutionLocation institutionLocation;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
