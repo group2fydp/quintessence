@@ -16,7 +16,7 @@ public class ClinicianController {
 
     @RequestMapping("/{username}")
     public ClinicianDTO getClinician(@PathVariable final String username){
-        return clinicianService.getClinicianByUsername(username);
+        return clinicianService.getClinicianByUsername(username).get();
     }
 
     @PostMapping("/new")
