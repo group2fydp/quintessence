@@ -46,9 +46,26 @@ public class StudentServiceImpl extends TenantService implements StudentService 
             Program program = programRepository.findById(student.getProgram().getProgramId()).get();
             Faculty faculty = facultyRepository.findById(program.getFaculty().getFacultyId()).get();
             School school = schoolRepository.findById(faculty.getSchool().getSchoolId()).get();
+            studentDTO.setFirstName(student.getFirstName());
+            studentDTO.setLastName(student.getLastName());
+            studentDTO.setLoginAttempt(student.getLoginAttempt());
+            studentDTO.setClinicianId(student.getClinician().getClinicianId());
+            studentDTO.setPassword(student.getPassword());
+            studentDTO.setStudentEmail(student.getStudentEmail());
+            studentDTO.setStudentId(student.getStudentId());
+            studentDTO.setStudentNumber(student.getStudentNumber());
+            studentDTO.setCellPhone(student.getCellPhone());
+            studentDTO.setHomePhone(student.getHomePhone());
+            studentDTO.setPersonalEmail(student.getPersonalEmail());
+            studentDTO.setPreferredName(student.getPreferredName());
+            student.setGender(student.getGender());
+            student.setDateOfBirth(student.getDateOfBirth());
+            studentDTO.setSafetyplanId(student.getSafetyplanId());
             studentDTO.setProgramName(program.getName());
             studentDTO.setFacultyName(faculty.getName());
             studentDTO.setSchoolName(school.getName());
+            studentDTO.setUsername(student.getUsername());
+            studentDTO.setTenantId(student.getTenantId());
             return studentDTO;
 
     };
