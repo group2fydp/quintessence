@@ -16,6 +16,10 @@ public class SocialLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  socialLocationId;
 
+    @ManyToOne
+    @JoinColumn(name = "safety_plan_id")
+    private Safetyplan safetyplan;
+
     private String name;
     private String description;
     private String address;
