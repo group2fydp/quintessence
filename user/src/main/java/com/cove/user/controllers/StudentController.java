@@ -41,7 +41,7 @@ public class StudentController {
         return allStudents;
     }
     @RequestMapping("/{id}")
-    public StudentDTO getStudent(@PathVariable final int id){
+    public StudentDTO getStudent(@PathVariable final long id){
         return studentService.getStudentById(id);
     }
 

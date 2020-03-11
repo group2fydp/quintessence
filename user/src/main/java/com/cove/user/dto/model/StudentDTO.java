@@ -31,4 +31,7 @@ public class StudentDTO {
     private String cellPhone;
     private String homePhone;
     private int loginAttempt;
+    private String programName;
+    private String facultyName;
+    private String schoolName;
 }

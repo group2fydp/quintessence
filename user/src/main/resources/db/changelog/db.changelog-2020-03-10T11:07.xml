@@ -1,0 +1,50 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
+    <changeSet id="20200310" author="tbunyadova">
+        <addColumn tableName="student">
+            <column name="program_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <createTable tableName="school">
+            <column name="school_id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="faculty">
+            <column name="faculty_id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="school_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_faculty_school" references="school(school_id)" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="program">
+            <column name="program_id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" />
+            </column>
+            <column name="faculty_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_program_faculty" references="faculty(faculty_id)" />
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <loadUpdateData tableName="clinician" separator="," primaryKey="clinician_id" file="../migrations/clinicianData.csv" relativeToChangelogFile="true"/>
+        <loadUpdateData tableName="school" separator="," primaryKey="school_id" file="../migrations/schoolData.csv" relativeToChangelogFile="true"/>
+        <loadUpdateData tableName="faculty" separator="," primaryKey="faculty_id" file="../migrations/facultyData.csv" relativeToChangelogFile="true"/>
+        <loadUpdateData tableName="program" separator="," primaryKey="program_id" file="../migrations/programData.csv" relativeToChangelogFile="true"/>
+        <loadUpdateData tableName="student" separator="," primaryKey="student_id" file="../migrations/studentData.csv" relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>

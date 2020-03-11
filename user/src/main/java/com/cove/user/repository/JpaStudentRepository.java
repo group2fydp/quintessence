@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface JpaStudentRepository extends JpaRepository<Student, Long> {
+    Student findByStudentId(long studentId);
     List<Student> findByClinician(Clinician clinician);
     Student findByStudentNumber(long studentNumber);
     Student findBySafetyplanId(long safetyPlanId);

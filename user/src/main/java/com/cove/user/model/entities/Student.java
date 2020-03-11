@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -89,6 +90,11 @@ public class Student extends TenantEntity implements Serializable {
 
     @Column(nullable = false, name = "is_active")
     private boolean isActive;
+
+    @NotAudited
+    @ManyToOne
+    @JoinColumn(name="program_id")
+    private Program program;
 
     // Required by Hibernate
     public Student(){}

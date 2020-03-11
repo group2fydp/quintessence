@@ -2,11 +2,11 @@ package com.cove.user.services;
 
 import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
-import com.cove.user.model.entities.Clinician;
-import com.cove.user.model.entities.Student;
-import com.cove.user.repository.JpaClinicianRepository;
-import com.cove.user.repository.JpaStudentRepository;
+import com.cove.user.model.entities.*;
+import com.cove.user.repository.*;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,10 +26,45 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     private JpaClinicianRepository clinicianRepository;
 
     @Autowired
+    private JpaProgramRepository programRepository;
+
+    @Autowired
+    private JpaSchoolRepository schoolRepository;
+
+    @Autowired
+    private JpaFacultyRepository facultyRepository;
+
+    @Autowired
     private BCryptPasswordEncoder encoder;
 
     @Autowired
     private ModelMapper modelMapper;
+
+    Converter<Student, StudentDTO> customStudentConverter = mappingContext ->  {
+            StudentDTO studentDTO = new StudentDTO();
+            Student student = mappingContext.getSource();
+            Program program = programRepository.findById(student.getProgram().getProgramId()).get();
+            Faculty faculty = facultyRepository.findById(program.getFaculty().getFacultyId()).get();
+            School school = schoolRepository.findById(faculty.getSchool().getSchoolId()).get();
+            studentDTO.setProgramName(program.getName());
+            studentDTO.setFacultyName(faculty.getName());
+            studentDTO.setSchoolName(school.getName());
+            return studentDTO;
+
+    };
+
+    PropertyMap<Student, StudentDTO> customePropertyMap = new PropertyMap<Student, StudentDTO>() {
+        @Override
+        protected void configure() {
+            Program program = programRepository.findById(source.getProgram().getProgramId()).get();
+            Faculty faculty = facultyRepository.findById(program.getFaculty().getFacultyId()).get();
+            School school = schoolRepository.findById(faculty.getSchool().getSchoolId()).get();
+
+            map().setProgramName(program.getName());
+            map().setFacultyName(program.getName());
+            map().setSchoolName(program.getName());
+        }
+    };
 
     public List<StudentDTO> getAllStudents(){
         List<Student> studentList = studentRepository.findAll();
@@ -46,6 +81,8 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         //TODO: modify Optional student object for null objects
         if (studentRepository.findById(studentId).isPresent()){
             Student student = studentRepository.findById(studentId).get();
+            modelMapper.createTypeMap(Student.class, StudentDTO.class)
+                    .setConverter(customStudentConverter);
             return modelMapper.map(student, StudentDTO.class);
         }
         throw new EntityNotFoundException("Student not found " + studentId);

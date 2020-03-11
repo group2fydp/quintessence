@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UserInterface userInterface;
@@ -68,9 +72,9 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void validatePassword(LoginRequestDTO requestDTO, UserResponseDTO user, String tenantId){
-        LOGGER.info(":::: ADMIN PASSWORD VALIDATION ::::");
+        LOGGER.info(":::: USER PASSWORD VALIDATION ::::");
 
-        if (BCrypt.checkpw(requestDTO.getPassword(), user.getPassword())) {
+        if (BCrypt.checkpw(requestDTO.getPassword(), user.getPassword())){
             user.setLoginAttempt(0);
             userInterface.updateUser(user, tenantId);
         } else {
@@ -79,7 +83,7 @@ public class LoginServiceImpl implements LoginService {
             if (user.getLoginAttempt() >= 3) {
                 userInterface.updateUser(user, tenantId);
 
-                LOGGER.debug("ADMIN IS BLOCKED DUE TO MULTIPLE WRONG ATTEMPTS...");
+                LOGGER.debug("USER IS BLOCKED DUE TO MULTIPLE WRONG ATTEMPTS...");
                 throw new UnauthorizedException(ErrorMessageConstants.IncorrectPasswordAttempts.MESSAGE,
                         ErrorMessageConstants.IncorrectPasswordAttempts.DEVELOPER_MESSAGE);
             }
@@ -88,7 +92,7 @@ public class LoginServiceImpl implements LoginService {
             throw new UnauthorizedException(ErrorMessageConstants.ForgetPassword.MESSAGE, ErrorMessageConstants.ForgetPassword.DEVELOPER_MESSAGE);
         }
 
-        LOGGER.info(":::: ADMIN PASSWORD VALIDATED ::::");
+        LOGGER.info(":::: USER PASSWORD VALIDATED ::::");
     }
 
     private Consumer<UserResponseDTO> validateUserUsername = (admin) -> {
