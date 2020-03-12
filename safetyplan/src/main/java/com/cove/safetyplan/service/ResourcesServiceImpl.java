@@ -40,29 +40,36 @@ public class ResourcesServiceImpl implements ResourcesService {
     }
 
     public HelplineDTO createHelpline(HelplineDTO helplineDTO){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Helpline helpline = modelMapper.map(helplineDTO, Helpline.class);
         return modelMapper.map(helplineRepository.save(helpline), HelplineDTO.class);
     }
 
     public MentalHealthServiceDTO createMentalHealthService(MentalHealthServiceDTO mentalHealthServiceDTO){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         MentalHealthService mentalHealthService = modelMapper.map(mentalHealthServiceDTO, MentalHealthService.class);
         mentalHealthService.setInstitutionLocation(institutionLocationRepository.findById(mentalHealthServiceDTO.getInstitutionLocationId()).get());
-        return modelMapper.map(mentalHealthServiceRepository.save(mentalHealthService), MentalHealthServiceDTO.class);
+        MentalHealthServiceDTO response = modelMapper.map(mentalHealthServiceRepository.save(mentalHealthService), MentalHealthServiceDTO.class);
+        response.setInstitutionLocationId(mentalHealthService.getInstitutionLocation().getInstitutionLocationId());
+        return response;
     }
 
     public List<MentalHealthServiceDTO> getMentalHealthServicesForInstitutionLocation(long institutionLocationId){
         InstitutionLocation institutionLocation = institutionLocationRepository.findById(institutionLocationId).get();
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<MentalHealthServiceDTO> mentalHealthServiceDTOS = new ArrayList<>();
         mentalHealthServiceRepository.findAllByInstitutionLocation(institutionLocation).forEach(mhs -> mentalHealthServiceDTOS.add(modelMapper.map(mhs, MentalHealthServiceDTO.class)));
         return mentalHealthServiceDTOS;
     }
 
     public InstitutionDTO createInstitution(InstitutionDTO institutionDTO){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Institution institution = modelMapper.map(institutionDTO, Institution.class);
         return modelMapper.map(institutionRepository.save(institution), InstitutionDTO.class);
     }
 
     public InstitutionDTO getInstitution(long institutionId){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Institution institution = institutionRepository.findById(institutionId).get();
         return modelMapper.map(institution, InstitutionDTO.class);
     }
@@ -77,7 +84,7 @@ public class ResourcesServiceImpl implements ResourcesService {
     }
 
     private List<String> availableServicesListForInstitutionLocation(long institutionLocationId){
-        InstitutionLocation institutionLocation = institutionLocationRepository.findById(institutionLocationId).get();
+        InstitutionLocation institutionLocation = institutionLocationRepository.findByInstitutionLocationId(institutionLocationId).get();
         List<MentalHealthService> services = mentalHealthServiceRepository.findAllByInstitutionLocation(institutionLocation);
         List<String> serviceNames = new ArrayList<>();
         services.forEach(s -> serviceNames.add(s.getName()));
@@ -86,13 +93,19 @@ public class ResourcesServiceImpl implements ResourcesService {
     }
 
     public List<InstitutionLocationResponseDTO> getAllInstitutionLocations(){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<InstitutionLocationResponseDTO> institutionLocationResponseDTOList = new ArrayList<>();
-        institutionLocationRepository.findAll().forEach(i -> institutionLocationResponseDTOList.add(modelMapper.map(i, InstitutionLocationResponseDTO.class)));
-        institutionLocationResponseDTOList.forEach(dto -> dto.setServices(availableServicesListForInstitutionLocation(dto.getInstitutionId())));
+        for (InstitutionLocation institutionLocation : institutionLocationRepository.findAll()){
+            InstitutionLocationResponseDTO responseDTO = modelMapper.map(institutionLocation, InstitutionLocationResponseDTO.class);
+            responseDTO.setInstitutionId(institutionLocation.getInstitution().getInstitutionId());
+            institutionLocationResponseDTOList.add(responseDTO);
+        }
+        institutionLocationResponseDTOList.forEach(dto -> dto.setServices(availableServicesListForInstitutionLocation(dto.getInstitutionLocationId())));
         return institutionLocationResponseDTOList;
     }
 
     public List<SocialLocationDTO> getSocialLocationForSafetyPlan(long safetyplanId){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<SocialLocation> socialLocations = socialLocationRepository.findAllBySafetyplan(safetyPlanRepository.findById(safetyplanId).get());
         List<SocialLocationDTO> socialLocationDTOS = new ArrayList<>();
         socialLocations.forEach(sl -> socialLocationDTOS.add(modelMapper.map(sl, SocialLocationDTO.class)));
@@ -100,6 +113,7 @@ public class ResourcesServiceImpl implements ResourcesService {
     }
 
     public SocialLocationDTO createSocialLocation(SocialLocationDTO socialLocationDTO){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         SocialLocation socialLocation = modelMapper.map(socialLocationDTO, SocialLocation.class);
         return modelMapper.map(socialLocationRepository.save(socialLocation), SocialLocationDTO.class);
     }

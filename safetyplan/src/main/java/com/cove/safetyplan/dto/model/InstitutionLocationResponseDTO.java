@@ -12,6 +12,7 @@ import java.util.List;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InstitutionLocationResponseDTO {
+    private long institutionLocationId;
     private long institutionId;
     private String name;
     private String streetAddress;

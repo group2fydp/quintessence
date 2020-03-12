@@ -21,6 +21,7 @@ import java.util.List;
 public class InstitutionLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "institution_location_id")
     private Long  institutionLocationId;
 
     private String name;
