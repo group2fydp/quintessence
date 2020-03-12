@@ -5,10 +5,12 @@ import com.cove.safetyplan.model.entities.*;
 import com.cove.safetyplan.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ResourcesServiceImpl implements ResourcesService {
     @Autowired
     private ModelMapper modelMapper;
@@ -65,16 +67,29 @@ public class ResourcesServiceImpl implements ResourcesService {
         return modelMapper.map(institution, InstitutionDTO.class);
     }
 
-    public InstitutionLocationDTO createInstitutionLocation(InstitutionLocationDTO institutionLocationDTO){
-        InstitutionLocation institutionLocation = modelMapper.map(institutionLocationDTO, InstitutionLocation.class);
-        institutionLocation.setInstitution(institutionRepository.findById(institutionLocationDTO.getInstitutionId()).get());
-        return modelMapper.map(institutionLocationRepository.save(institutionLocation), InstitutionLocationDTO.class);
+    public InstitutionLocationResponseDTO createInstitutionLocation(InstitutionLocationRequestDTO institutionLocationRequestDTO){
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        InstitutionLocation institutionLocation = modelMapper.map(institutionLocationRequestDTO, InstitutionLocation.class);
+        institutionLocation.setInstitution(institutionRepository.findById(institutionLocationRequestDTO.getInstitutionId()).get());
+        InstitutionLocationResponseDTO institutionLocationResponseDTO = modelMapper.map(institutionLocationRepository.save(institutionLocation), InstitutionLocationResponseDTO.class);
+        institutionLocationResponseDTO.setInstitutionId(institutionLocation.getInstitution().getInstitutionId());
+        return institutionLocationResponseDTO;
     }
 
-    public List<InstitutionLocationDTO> getAllInstitutionLocations(){
-        List<InstitutionLocationDTO> institutionLocationDTOList = new ArrayList<>();
-        institutionLocationRepository.findAll().forEach(i -> institutionLocationDTOList.add(modelMapper.map(i, InstitutionLocationDTO.class)));
-        return institutionLocationDTOList;
+    private List<String> availableServicesListForInstitutionLocation(long institutionLocationId){
+        InstitutionLocation institutionLocation = institutionLocationRepository.findById(institutionLocationId).get();
+        List<MentalHealthService> services = mentalHealthServiceRepository.findAllByInstitutionLocation(institutionLocation);
+        List<String> serviceNames = new ArrayList<>();
+        services.forEach(s -> serviceNames.add(s.getName()));
+        return serviceNames;
+
+    }
+
+    public List<InstitutionLocationResponseDTO> getAllInstitutionLocations(){
+        List<InstitutionLocationResponseDTO> institutionLocationResponseDTOList = new ArrayList<>();
+        institutionLocationRepository.findAll().forEach(i -> institutionLocationResponseDTOList.add(modelMapper.map(i, InstitutionLocationResponseDTO.class)));
+        institutionLocationResponseDTOList.forEach(dto -> dto.setServices(availableServicesListForInstitutionLocation(dto.getInstitutionId())));
+        return institutionLocationResponseDTOList;
     }
 
     public List<SocialLocationDTO> getSocialLocationForSafetyPlan(long safetyplanId){

@@ -23,6 +23,8 @@ public class InstitutionLocation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long  institutionLocationId;
 
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;
@@ -39,10 +41,6 @@ public class InstitutionLocation {
     
     private String phone;
 
-    @OneToMany
-    @JoinColumn(name="mental_health_service_id")
-    private List<MentalHealthService> services;
-
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -52,4 +50,21 @@ public class InstitutionLocation {
     private Date lastModifyDate;
 
     private boolean isDeleted;
+
+    @PrePersist
+    protected void prePersist(){
+        if (this.createDate == null) this.createDate = new Date();
+        if (this.lastModifyDate == null) this.lastModifyDate = new Date();
+    }
+
+    @PreUpdate
+    protected void preUpdate(){
+        this.lastModifyDate = new Date();
+    }
+
+    @PreRemove
+    protected void preRemove(){
+        this.isDeleted = true;
+        this.lastModifyDate = new Date();
+    }
 }

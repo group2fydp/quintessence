@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class InstitutionLocationDTO {
+public class InstitutionLocationRequestDTO {
     private long institutionId;
+    private String name;
     private String streetAddress;
     private String city;
     private String province;

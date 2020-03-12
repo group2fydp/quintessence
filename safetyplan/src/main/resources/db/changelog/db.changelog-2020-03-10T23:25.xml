@@ -33,19 +33,19 @@
             </column>
         </addColumn>
         <addColumn tableName="helpline">
-            <column name="main_phone" type="varchar(255)">
+            <column name="main_phone" type="varchar(64)">
                 <constraints nullable="true" />
             </column>
-            <column name="main_email" type="varchar(255)">
+            <column name="main_email" type="varchar(64)">
                 <constraints nullable="true" />
             </column>
             <column name="address" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="city" type="varchar(128)">
+            <column name="city" type="varchar(64)">
                 <constraints nullable="true" />
             </column>
-            <column name="province" type="varchar(32)">
+            <column name="province" type="varchar(16)">
                 <constraints nullable="true" />
             </column>
         </addColumn>

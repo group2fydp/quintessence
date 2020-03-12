@@ -5,14 +5,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class HelplineDTO {
-    private String mainPhone;
-    private String mainEmail;
-    private String address;
+public class InstitutionLocationResponseDTO {
+    private long institutionId;
+    private String name;
+    private String streetAddress;
     private String city;
     private String province;
+    private String postalCode;
+    private String email;
+    private String phone;
+    private List<String> services;
 }

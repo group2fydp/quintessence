@@ -11,8 +11,8 @@ public interface ResourcesService {
     List<MentalHealthServiceDTO> getMentalHealthServicesForInstitutionLocation(long institutionLocationId);
     InstitutionDTO createInstitution(InstitutionDTO institutionDTO);
     InstitutionDTO getInstitution(long institutionId);
-    InstitutionLocationDTO createInstitutionLocation(InstitutionLocationDTO institutionLocationDTO);
-    List<InstitutionLocationDTO> getAllInstitutionLocations();
+    InstitutionLocationResponseDTO createInstitutionLocation(InstitutionLocationRequestDTO institutionLocationRequestDTO);
+    List<InstitutionLocationResponseDTO> getAllInstitutionLocations();
     List<SocialLocationDTO> getSocialLocationForSafetyPlan(long safetyplanId);
     SocialLocationDTO createSocialLocation(SocialLocationDTO socialLocationDTO);
 }

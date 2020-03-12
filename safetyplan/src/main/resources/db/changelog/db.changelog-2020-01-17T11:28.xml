@@ -70,6 +70,9 @@
             <column name="institution_location_id" autoIncrement="true" startWith="10000000" type="bigint">
                 <constraints primaryKey="true" />
             </column>
+            <column name="name" type="varchar(128)">
+                <constraints nullable="false" />
+            </column>
             <column name="institution_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_institution_location" references="institution(institution_id)"/>
             </column>
