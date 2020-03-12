@@ -6,9 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 @Data
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
@@ -16,5 +13,5 @@ import javax.persistence.ManyToOne;
 public class MentalHealthServiceDTO {
     private long mentalHealthServiceId;
     private String name;
-    private long institutionLocation;
+    private long institutionLocationId;
 }

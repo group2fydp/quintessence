@@ -23,8 +23,6 @@ public class Helpline {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long helplineId;
 
-    private Long institutionId;
-
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
