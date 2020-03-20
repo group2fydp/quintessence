@@ -48,13 +48,14 @@ public class ResourcesController {
         return resourcesService.getInstitution(id);
     }
 
-    @GetMapping("/socialLocations/{id}")
-    public List<SocialLocationDTO> getSocialLocations(@PathVariable long id){
-        return resourcesService.getSocialLocationForSafetyPlan(id);
+    @GetMapping("/socialLocations/{safetyPlanId}")
+    public List<SocialLocationDTO> getSocialLocations(@PathVariable long safetyPlanId){
+        return resourcesService.getSocialLocationForSafetyPlan(safetyPlanId);
     }
 
     @PostMapping("/socialLocation/new")
     public SocialLocationDTO createSocialLocation(@RequestBody SocialLocationDTO socialLocationDTO){
         return resourcesService.createSocialLocation(socialLocationDTO);
     }
+
 }

@@ -40,35 +40,6 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     @Autowired
     private ModelMapper modelMapper;
 
-    Converter<Student, StudentDTO> customStudentConverter = mappingContext ->  {
-            StudentDTO studentDTO = new StudentDTO();
-            Student student = mappingContext.getSource();
-            Program program = programRepository.findById(student.getProgram().getProgramId()).get();
-            Faculty faculty = facultyRepository.findById(program.getFaculty().getFacultyId()).get();
-            School school = schoolRepository.findById(faculty.getSchool().getSchoolId()).get();
-            studentDTO.setFirstName(student.getFirstName());
-            studentDTO.setLastName(student.getLastName());
-            studentDTO.setLoginAttempt(student.getLoginAttempt());
-            studentDTO.setClinicianId(student.getClinician().getClinicianId());
-            studentDTO.setPassword(student.getPassword());
-            studentDTO.setStudentEmail(student.getStudentEmail());
-            studentDTO.setStudentId(student.getStudentId());
-            studentDTO.setStudentNumber(student.getStudentNumber());
-            studentDTO.setCellPhone(student.getCellPhone());
-            studentDTO.setHomePhone(student.getHomePhone());
-            studentDTO.setPersonalEmail(student.getPersonalEmail());
-            studentDTO.setPreferredName(student.getPreferredName());
-            student.setGender(student.getGender());
-            student.setDateOfBirth(student.getDateOfBirth());
-            studentDTO.setSafetyplanId(student.getSafetyplanId());
-            studentDTO.setProgramName(program.getName());
-            studentDTO.setFacultyName(faculty.getName());
-            studentDTO.setSchoolName(school.getName());
-            studentDTO.setUsername(student.getUsername());
-            studentDTO.setTenantId(student.getTenantId());
-            return studentDTO;
-
-    };
 
     public List<StudentDTO> getAllStudents(){
         List<Student> studentList = studentRepository.findAll();
@@ -85,9 +56,11 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         //TODO: modify Optional student object for null objects
         if (studentRepository.findById(studentId).isPresent()){
             Student student = studentRepository.findById(studentId).get();
-            modelMapper.createTypeMap(Student.class, StudentDTO.class)
-                    .setConverter(customStudentConverter);
-            return modelMapper.map(student, StudentDTO.class);
+            StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+            studentDTO.setClinicianId(student.getClinician().getClinicianId());
+            studentDTO.setFacultyName(student.getProgram().getFaculty().getName());
+            studentDTO.setSchoolName(student.getProgram().getFaculty().getSchool().getName());
+            return studentDTO;
         }
         throw new EntityNotFoundException("Student not found " + studentId);
     }
@@ -105,7 +78,10 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         Student student = modelMapper.map(studentDTO, Student.class);
         student.setClinician(clinicianRepository.findById(studentDTO.getClinicianId()).get());
         return modelMapper.map(studentRepository.save(student), StudentDTO.class)
-                .setClinicianId(student.getClinician().getClinicianId());
+                .setClinicianId(student.getClinician().getClinicianId())
+                .setSchoolName(student.getProgram().getFaculty().getSchool().getName())
+                .setFacultyName(student.getProgram().getFaculty().getName())
+                .setProgramName(student.getProgram().getName());
     }
 
     public StudentDTO updateStudent(StudentDTO studentDTO) {

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -12,11 +14,16 @@ import lombok.experimental.Accessors;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CopingStrategyDto {
-
     private Long copingStrategyId;
-
     private Long safetyplanId;
-
     private String type;
+    private String title;
+    private String description;
+    private String videoUrl;
+    private String videoType;
+    private String externalApp;
+    private String externalAppType;
+    private String externalAppCredential;
+    private List<InstructionDTO> instructions;
 
 }

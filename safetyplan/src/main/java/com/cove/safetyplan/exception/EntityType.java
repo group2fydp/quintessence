@@ -2,5 +2,6 @@ package com.cove.safetyplan.exception;
 
 public enum EntityType {
     SAFETYPLAN,
-    COPINGSTRATEGY
+    COPINGSTRATEGY,
+    INSTRUCTION
 }

@@ -1,6 +1,7 @@
 package com.cove.safetyplan.controller;
 
 import com.cove.safetyplan.dto.model.CopingStrategyDto;
+import com.cove.safetyplan.dto.model.InstructionDTO;
 import com.cove.safetyplan.dto.response.Response;
 import com.cove.safetyplan.service.CopingStrategyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/copingStrategies", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,6 +77,23 @@ public class CopingStrategiesController {
     @DeleteMapping("/{id}/all")
     public Response removeAllCopingStrategiesFromSafetyPlan(@PathVariable long id){
         copingStrategyService.deleteAllCopingStrategiesFromSafetyPlan(id);
+        return Response.ok();
+    }
+
+
+    @GetMapping("/instructions/{copingStrategyId}")
+    public List<InstructionDTO> getInstructionsForCopingStrategy(@PathVariable long copingStrategyId){
+        return copingStrategyService.getInstructionsByCopingStrategy(copingStrategyId);
+    }
+
+    @PostMapping("/instructions/new")
+    public InstructionDTO createInstruction(@RequestBody InstructionDTO instructionDTO){
+        return copingStrategyService.createInstruction(instructionDTO);
+    }
+
+    @DeleteMapping("/instructions/{instructionId}")
+    public Response removeInstruction(@PathVariable long instructionId){
+        copingStrategyService.deleteInstruction(instructionId);
         return Response.ok();
     }
 }

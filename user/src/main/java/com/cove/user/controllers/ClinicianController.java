@@ -1,11 +1,13 @@
 package com.cove.user.controllers;
 
 import com.cove.user.dto.model.ClinicianDTO;
+import com.cove.user.dto.model.StudentDTO;
 import com.cove.user.services.ClinicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,6 +19,11 @@ public class ClinicianController {
     @RequestMapping("/{username}")
     public ClinicianDTO getClinician(@PathVariable final String username){
         return clinicianService.getClinicianByUsername(username).get();
+    }
+
+    @RequestMapping("/{clinicianId}/students")
+    public List<StudentDTO> getAllStudentsForClinician(@PathVariable final long clinicianId){
+        return clinicianService.getAllStudentsForClinician(clinicianId);
     }
 
     @PostMapping("/new")

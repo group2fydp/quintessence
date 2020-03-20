@@ -3,28 +3,34 @@ package com.cove.safetyplan.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.Accessors;
-import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Data
 @Entity
-@Table(name="helpline")
+@Audited
+@EntityListeners(AuditingEntityListener.class)
+@Table(name="instruction")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Helpline {
+public class Instruction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long helplineId;
+    @Column(name="instruction_id")
+    private long instructionId;
 
-    private String name;
+    private String decription;
 
+    @ManyToOne
+    @JoinColumn(name = "coping_strategy_id")
+    private CopingStrategy copingStrategy;
+
+    private boolean isDeleted;
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -32,15 +38,6 @@ public class Helpline {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifyDate;
-
-    private boolean isDeleted;
-
-    private String mainPhone;
-    private String mainEmail;
-    private String address;
-    private String city;
-    private String province;
-
 
     @PrePersist
     protected void prePersist(){
@@ -58,5 +55,4 @@ public class Helpline {
         this.isDeleted = true;
         this.lastModifyDate = new Date();
     }
-
 }

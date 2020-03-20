@@ -9,11 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResourcesServiceImpl implements ResourcesService {
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private JPACopingStrategyRepository copingStrategyRepository;
 
     @Autowired
     private JpaHelplineRepository helplineRepository;
@@ -33,18 +37,22 @@ public class ResourcesServiceImpl implements ResourcesService {
     @Autowired
     private JpaSocialLocationRepository socialLocationRepository;
 
+
+    @Override
     public List<HelplineDTO> getHelplines(){
         List<HelplineDTO> helplineDTOS = new ArrayList<>();
         helplineRepository.findAll().forEach(h -> helplineDTOS.add(modelMapper.map(h, HelplineDTO.class)));
         return helplineDTOS;
     }
 
+    @Override
     public HelplineDTO createHelpline(HelplineDTO helplineDTO){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Helpline helpline = modelMapper.map(helplineDTO, Helpline.class);
         return modelMapper.map(helplineRepository.save(helpline), HelplineDTO.class);
     }
 
+    @Override
     public MentalHealthServiceDTO createMentalHealthService(MentalHealthServiceDTO mentalHealthServiceDTO){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         MentalHealthService mentalHealthService = modelMapper.map(mentalHealthServiceDTO, MentalHealthService.class);
@@ -54,6 +62,7 @@ public class ResourcesServiceImpl implements ResourcesService {
         return response;
     }
 
+    @Override
     public List<MentalHealthServiceDTO> getMentalHealthServicesForInstitutionLocation(long institutionLocationId){
         InstitutionLocation institutionLocation = institutionLocationRepository.findById(institutionLocationId).get();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
@@ -62,12 +71,14 @@ public class ResourcesServiceImpl implements ResourcesService {
         return mentalHealthServiceDTOS;
     }
 
+    @Override
     public InstitutionDTO createInstitution(InstitutionDTO institutionDTO){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Institution institution = modelMapper.map(institutionDTO, Institution.class);
         return modelMapper.map(institutionRepository.save(institution), InstitutionDTO.class);
     }
 
+    @Override
     public InstitutionDTO getInstitution(long institutionId){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Institution institution = institutionRepository.findById(institutionId).get();
@@ -92,6 +103,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
     }
 
+    @Override
     public List<InstitutionLocationResponseDTO> getAllInstitutionLocations(){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<InstitutionLocationResponseDTO> institutionLocationResponseDTOList = new ArrayList<>();
@@ -104,6 +116,7 @@ public class ResourcesServiceImpl implements ResourcesService {
         return institutionLocationResponseDTOList;
     }
 
+    @Override
     public List<SocialLocationDTO> getSocialLocationForSafetyPlan(long safetyplanId){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         List<SocialLocation> socialLocations = socialLocationRepository.findAllBySafetyplan(safetyPlanRepository.findById(safetyplanId).get());
@@ -112,9 +125,12 @@ public class ResourcesServiceImpl implements ResourcesService {
         return socialLocationDTOS;
     }
 
+    @Override
     public SocialLocationDTO createSocialLocation(SocialLocationDTO socialLocationDTO){
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         SocialLocation socialLocation = modelMapper.map(socialLocationDTO, SocialLocation.class);
-        return modelMapper.map(socialLocationRepository.save(socialLocation), SocialLocationDTO.class);
+        SocialLocationDTO response = modelMapper.map(socialLocationRepository.save(socialLocation), SocialLocationDTO.class);
+        response.setSafetyPlanId(socialLocation.getSafetyplan().getSafetyplanId());
+        return response;
     }
 }

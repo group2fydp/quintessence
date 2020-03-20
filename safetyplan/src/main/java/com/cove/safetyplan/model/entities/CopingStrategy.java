@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Audited
@@ -43,13 +44,15 @@ public class CopingStrategy {
     @Column(nullable = false)
     private String description;
 
-    private String instructions;
+//    private String instructions;
 
     private String videoUrl;
     private String videoType;
     private String externalApp;
     private String externalAppType;
     private String externalAppCredential;
+    @OneToMany(targetEntity=Instruction.class, mappedBy="copingStrategy", fetch=FetchType.EAGER)
+    private List<Instruction> instructions;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
