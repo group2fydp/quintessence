@@ -77,8 +77,16 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         Clinician clinician = clinicianRepository.findById(clinicianId).get();
         List<Student> studentList = studentRepository.findByClinician(clinician);
         List<StudentDTO> studentDTOS = new ArrayList<>();
-        studentList.forEach(student -> studentDTOS.add(modelMapper.map(student, StudentDTO.class)));
+        studentList.forEach(student -> studentDTOS.add(mapDtoToEntity(student)));
         return studentDTOS;
+    }
+
+    private StudentDTO mapDtoToEntity(Student student){
+        StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+        studentDTO.setProgramName(student.getProgram().getName());
+        studentDTO.setFacultyName(student.getProgram().getFaculty().getName());
+        studentDTO.setSchoolName(student.getProgram().getFaculty().getSchool().getName());
+        return studentDTO;
     }
 
     public void deleteClinician(long clinicianId){
