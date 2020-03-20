@@ -1,7 +1,6 @@
 package com.cove.user.controllers;
 
-import com.cove.user.dto.model.ClinicianDTO;
-import com.cove.user.dto.model.StudentDTO;
+import com.cove.user.dto.model.*;
 import com.cove.user.services.ClinicianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,4 +43,18 @@ public class ClinicianController {
         return response;
     }
 
+    @GetMapping("/schools")
+    public List<SchoolDTO> getAllSchools(){
+        return clinicianService.getAllSchools();
+    }
+
+    @RequestMapping("/{schoolId}/faculties")
+    public List<FacultyDTO> getAllFacultiesForSchool(@PathVariable final long schoolId){
+        return clinicianService.getAllFacultiesForSchool(schoolId);
+    }
+
+    @RequestMapping("/{facultyId}/programs")
+    public List<ProgramDTO> getAllProgramsForFaculty(@PathVariable final long facultyId){
+        return clinicianService.getAllProgramsForFaculty(facultyId);
+    }
 }

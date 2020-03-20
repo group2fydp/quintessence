@@ -1,11 +1,11 @@
 package com.cove.user.services;
 
-import com.cove.user.dto.model.ClinicianDTO;
-import com.cove.user.dto.model.StudentDTO;
+import com.cove.user.dto.model.*;
 import com.cove.user.model.entities.Clinician;
+import com.cove.user.model.entities.Faculty;
+import com.cove.user.model.entities.School;
 import com.cove.user.model.entities.Student;
-import com.cove.user.repository.JpaClinicianRepository;
-import com.cove.user.repository.JpaStudentRepository;
+import com.cove.user.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -31,6 +31,15 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private JpaSchoolRepository schoolRepository;
+
+    @Autowired
+    private JpaFacultyRepository facultyRepository;
+
+    @Autowired
+    private JpaProgramRepository programRepository;
 
     public ClinicianDTO getClinicianById(long clinicianId){
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianId);
@@ -98,4 +107,29 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
             throw new ResourceNotFoundException();
         }
     }
+
+    public List<SchoolDTO> getAllSchools(){
+        List<SchoolDTO> response = new ArrayList<>();
+        schoolRepository.findAll().forEach(s -> response.add(modelMapper.map(s, SchoolDTO.class)));
+        return response;
+    }
+
+    public List<FacultyDTO> getAllFacultiesForSchool(long schoolId){
+        Optional<School> school = schoolRepository.findById(schoolId);
+        List<FacultyDTO> response = new ArrayList<>();
+        if (school.isPresent()){
+            facultyRepository.findBySchool(school.get()).forEach(f -> response.add(modelMapper.map(f, FacultyDTO.class).setSchoolId(school.get().getSchoolId())));
+        }
+        return response;
+    }
+
+    public List<ProgramDTO> getAllProgramsForFaculty(long facultyId){
+        Optional<Faculty> faculty = facultyRepository.findById(facultyId);
+        List<ProgramDTO> response = new ArrayList<>();
+        if (faculty.isPresent()){
+            programRepository.findByFaculty(faculty.get()).forEach(p -> response.add(modelMapper.map(p, ProgramDTO.class).setFacultyId(faculty.get().getFacultyId())));
+        }
+        return response;
+    }
+
 }
