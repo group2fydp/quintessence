@@ -69,12 +69,8 @@
                 <constraints nullable="false" />
             </column>
             <column name="preferred_name" type="varchar(128)" />
-            <column name="gender" type="char(16)">
-                <constraints nullable="false" />
-            </column>
-            <column name="date_of_birth" type="date">
-                <constraints nullable="false" />
-            </column>
+            <column name="gender" type="char(16)" />
+            <column name="date_of_birth" type="date" />
             <column name="personal_email" type="varchar(255)" />
             <column name="student_email" type="varchar(255)">
                 <constraints nullable="false" />

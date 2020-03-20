@@ -39,7 +39,7 @@ public class Student extends TenantEntity implements Serializable {
     @JoinColumn(name = "clinician_id")
     private Clinician clinician;
 
-    @Column(nullable = false, name = "safetyplan_id")
+    @Column(name = "safetyplan_id")
     private Long safetyplanId;
 
     @Column(nullable = false, name = "first_name")
@@ -57,7 +57,7 @@ public class Student extends TenantEntity implements Serializable {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Column(nullable = false, name = "login_attempt")
+    @Column(name = "login_attempt")
     private int loginAttempt;
 
     @Column(nullable = false, name = "student_number")
@@ -93,7 +93,7 @@ public class Student extends TenantEntity implements Serializable {
 
     @NotAudited
     @ManyToOne
-    @JoinColumn(name="program_id")
+    @JoinColumn(name="program_id", nullable = false)
     private Program program;
 
     // Required by Hibernate

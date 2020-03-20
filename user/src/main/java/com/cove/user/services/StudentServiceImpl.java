@@ -78,10 +78,7 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         Student student = modelMapper.map(studentDTO, Student.class);
         student.setClinician(clinicianRepository.findById(studentDTO.getClinicianId()).get());
         return modelMapper.map(studentRepository.save(student), StudentDTO.class)
-                .setClinicianId(student.getClinician().getClinicianId())
-                .setSchoolName(student.getProgram().getFaculty().getSchool().getName())
-                .setFacultyName(student.getProgram().getFaculty().getName())
-                .setProgramName(student.getProgram().getName());
+                .setClinicianId(student.getClinician().getClinicianId());
     }
 
     public StudentDTO updateStudent(StudentDTO studentDTO) {

@@ -83,6 +83,7 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
 
     private StudentDTO mapDtoToEntity(Student student){
         StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+        studentDTO.setClinicianId(student.getClinician().getClinicianId());
         studentDTO.setProgramName(student.getProgram().getName());
         studentDTO.setFacultyName(student.getProgram().getFaculty().getName());
         studentDTO.setSchoolName(student.getProgram().getFaculty().getSchool().getName());
