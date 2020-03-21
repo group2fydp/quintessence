@@ -41,6 +41,7 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
     @Autowired
     private JpaProgramRepository programRepository;
 
+    @Override
     public ClinicianDTO getClinicianById(long clinicianId){
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianId);
         if (clinician.isPresent()){
@@ -50,7 +51,7 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
             throw new EntityNotFoundException("Clinician not found " + clinicianId);
         }
     }
-
+    @Override
     public Optional<ClinicianDTO> getClinicianByUsername(String username){
         Optional<Clinician> clinician = clinicianRepository.findByUsername(username);
         if(clinician.isPresent()){
@@ -58,7 +59,7 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         }
         return Optional.empty();
     }
-
+    @Override
     public ClinicianDTO updateClinician(ClinicianDTO clinicianDTO) {
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianDTO.getClinicianId());
         if (clinician.isPresent()){
@@ -74,13 +75,13 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
             throw new EntityNotFoundException("Clinician not found " + clinicianDTO.getClinicianId());
         }
     }
-
-    public ClinicianDTO addClinician(ClinicianDTO clinicianDTO){
+    @Override
+    public void addClinician(ClinicianDTO clinicianDTO){
         clinicianDTO.setPassword(encoder.encode(String.valueOf(clinicianDTO.getPassword())));
         Clinician clinician = modelMapper.map(clinicianDTO, Clinician.class);
-        return modelMapper.map(clinicianRepository.save(clinician), ClinicianDTO.class);
+        clinicianRepository.save(clinician);
     }
-
+    @Override
     public List<StudentDTO> getAllStudentsForClinician(long clinicianId){
         //TODO handle null optional for clinician
         Clinician clinician = clinicianRepository.findById(clinicianId).get();
@@ -98,22 +99,23 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         studentDTO.setSchoolName(student.getProgram().getFaculty().getSchool().getName());
         return studentDTO;
     }
-
-    public void deleteClinician(long clinicianId){
+    @Override
+    public String deleteClinician(long clinicianId){
         Optional<Clinician> clinician = clinicianRepository.findById(clinicianId);
         if (clinician.isPresent()){
             clinicianRepository.delete(clinician.get());
+            return "SUCCESS";
         } else {
             throw new ResourceNotFoundException();
         }
     }
-
+    @Override
     public List<SchoolDTO> getAllSchools(){
         List<SchoolDTO> response = new ArrayList<>();
         schoolRepository.findAll().forEach(s -> response.add(modelMapper.map(s, SchoolDTO.class)));
         return response;
     }
-
+    @Override
     public List<FacultyDTO> getAllFacultiesForSchool(long schoolId){
         Optional<School> school = schoolRepository.findById(schoolId);
         List<FacultyDTO> response = new ArrayList<>();
@@ -122,7 +124,7 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         }
         return response;
     }
-
+    @Override
     public List<ProgramDTO> getAllProgramsForFaculty(long facultyId){
         Optional<Faculty> faculty = facultyRepository.findById(facultyId);
         List<ProgramDTO> response = new ArrayList<>();

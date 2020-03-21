@@ -27,12 +27,14 @@ public class ClinicianController {
 
     @PostMapping("/new")
     public ClinicianDTO createClinician(@RequestBody ClinicianDTO clinicianDTO){
-        return clinicianService.addClinician(clinicianDTO);
+        clinicianService.addClinician(clinicianDTO);
+        return clinicianService.getClinicianByUsername(clinicianDTO.getUsername()).get();
     }
 
     @PutMapping("/update")
     public ClinicianDTO updateClinician(@RequestBody ClinicianDTO clinicianDTO) {
-        return clinicianService.updateClinician(clinicianDTO);
+        clinicianService.updateClinician(clinicianDTO);
+        return clinicianService.getClinicianByUsername(clinicianDTO.getUsername()).get();
     }
 
     @DeleteMapping("/delete/{id}")
