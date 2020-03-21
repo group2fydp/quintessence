@@ -43,7 +43,7 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         List<Student> studentList = studentRepository.findAll();
         List<StudentDTO> studentDTOS = new ArrayList<>();
         if (!studentList.isEmpty()){
-            studentList.forEach(student -> studentDTOS.add(modelMapper.map(student, StudentDTO.class)));
+            studentList.forEach(student -> studentDTOS.add(mapEntityToDto(student)));
 
         }
         return studentDTOS;
@@ -131,5 +131,14 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         else {
             throw new ResourceNotFoundException();
         }
+    }
+
+    private StudentDTO mapEntityToDto(Student student){
+        StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+        studentDTO.setClinicianId(student.getClinician().getClinicianId());
+        studentDTO.setFacultyName(student.getProgram().getFaculty().getName());
+        studentDTO.setSchoolName(student.getProgram().getFaculty().getSchool().getName());
+        studentDTO.setSafetyplanId(student.getSafetyplanId());
+        return studentDTO;
     }
 }

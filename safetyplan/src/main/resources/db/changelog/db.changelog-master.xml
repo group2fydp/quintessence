@@ -8,4 +8,6 @@
     <include file="db/changelog/db.changelog-2020-01-17T11:28.xml"/>
     <include file="db/changelog/db.changelog-2020-03-10T23:25.xml"/>
     <include file="db/changelog/db.changelog-2020-03-11T11:44.xml"/>
+    <include file="db/changelog/db.changelog-2020-03-11T21:20.xml"/>
+    <include file="db/changelog/db.changelog-2020-03-12T11:04.xml"/>
 </databaseChangeLog>

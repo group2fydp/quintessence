@@ -29,10 +29,5 @@
                 <constraints nullable="false" foreignKeyName="fk_coping_strategy_instruction" references="coping_strategy(coping_strategy_id)"/>
             </column>
         </createTable>
-        <addColumn tableName="helpline">
-            <column name="name" type="varchar(128)">
-                <constraints nullable="false" />
-            </column>
-        </addColumn>
     </changeSet>
 </databaseChangeLog>
