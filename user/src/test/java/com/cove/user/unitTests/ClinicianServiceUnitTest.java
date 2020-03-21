@@ -37,9 +37,6 @@ public class ClinicianServiceUnitTest {
     @Mock
     private JpaClinicianRepository clinicianRepository;
 
-    @Mock
-    private JpaStudentRepository studentRepository;
-
     private Clinician clinician1 = new Clinician();
     private Clinician clinician2 = new Clinician();
     private ClinicianDTO clinicianDTO1 = new ClinicianDTO();
@@ -151,8 +148,8 @@ public class ClinicianServiceUnitTest {
         Mockito.when(clinicianRepository.save(Mockito.any())).thenReturn(clinician1);
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(clinicianDTO1);
         Mockito.when(clinicianRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(clinician1));
-        clinicianService.updateClinician(clinicianDTO1);
-        ClinicianDTO result = clinicianService.getClinicianById(clinicianDTO1.getClinicianId());
+
+        ClinicianDTO result = clinicianService.updateClinician(clinicianDTO1);
 
         Assertions.assertEquals(1L, result.getClinicianId());
         Assertions.assertEquals("Joe",result.getFirstName());
@@ -169,6 +166,6 @@ public class ClinicianServiceUnitTest {
     public void testDeleteClinician(){
         Mockito.when(clinicianRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(clinician1));
         String response = clinicianService.deleteClinician(1L);
-        Assertions.assertEquals(response, "SUCCESS");
+        Assertions.assertEquals("SUCCESS", response);
     }
 }

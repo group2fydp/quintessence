@@ -4,9 +4,7 @@ import com.cove.user.dto.model.ClinicianDTO;
 import com.cove.user.dto.model.StudentDTO;
 import com.cove.user.model.entities.*;
 import com.cove.user.repository.*;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -68,17 +66,25 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     public StudentDTO getStudentByUsername(String username){
         Student student = studentRepository.findByUsername(username);
         if(student != null){
-            return modelMapper.map(student, StudentDTO.class);
+            Program program = programRepository.findById(student.getProgram().getProgramId()).get();
+            Faculty faculty = facultyRepository.findById(program.getFaculty().getFacultyId()).get();
+            School school = schoolRepository.findById(faculty.getSchool().getSchoolId()).get();
+            StudentDTO studentDTO = modelMapper.map(student, StudentDTO.class);
+            studentDTO.setClinicianId(student.getClinician().getClinicianId());
+            studentDTO.setProgramName(program.getName());
+            studentDTO.setFacultyName(faculty.getName());
+            studentDTO.setSchoolName(school.getName());
+            return studentDTO;
         }
+
         throw new EntityNotFoundException("Student not found " + username);
     }
 
-    public StudentDTO addStudent(StudentDTO studentDTO){
-        studentDTO.setPassword(encoder.encode(studentDTO.getPassword()));
+    public void addStudent(StudentDTO studentDTO){
+        studentDTO.setPassword(encoder.encode(String.valueOf(studentDTO.getPassword())));
         Student student = modelMapper.map(studentDTO, Student.class);
         student.setClinician(clinicianRepository.findById(studentDTO.getClinicianId()).get());
-        return modelMapper.map(studentRepository.save(student), StudentDTO.class)
-                .setClinicianId(student.getClinician().getClinicianId());
+        studentRepository.save(student);
     }
 
     public StudentDTO updateStudent(StudentDTO studentDTO) {
@@ -108,6 +114,7 @@ public class StudentServiceImpl extends TenantService implements StudentService 
         if (student.isPresent()){
             if (clinicianRepository.findById(clinicianDTO.getClinicianId()).isPresent()){
                 Clinician clinician = clinicianRepository.findById(clinicianDTO.getClinicianId()).get();
+                student.get().setClinician(clinician);
                 return modelMapper.map(studentRepository.save(student.get()), StudentDTO.class);
             }
         }
@@ -115,10 +122,11 @@ public class StudentServiceImpl extends TenantService implements StudentService 
     }
 
 
-    public void deleteStudent(long studentId){
+    public String deleteStudent(long studentId){
         Optional<Student> student = studentRepository.findById(studentId);
         if (student.isPresent()){
             studentRepository.delete(student.get());
+            return "SUCCESS";
         }
         else {
             throw new ResourceNotFoundException();
