@@ -57,6 +57,7 @@ public class StudentServiceUnitTest {
     @BeforeEach
     public void setup() throws Exception {
         initMocks(this);
+
         studentDTO1.setClinicianId(1L);
         studentDTO1.setTenantId(1L);
         studentDTO1.setPassword("password");

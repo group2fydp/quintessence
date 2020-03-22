@@ -58,4 +58,9 @@ public class ResourcesController {
         return resourcesService.createSocialLocation(socialLocationDTO);
     }
 
+    @PutMapping("/socialLocation/update")
+    public SocialLocationDTO updateSocialLocation(@RequestBody SocialLocationDTO socialLocationDTO){
+        return resourcesService.updateSocialLocation(socialLocationDTO);
+    }
+
 }

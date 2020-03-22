@@ -63,8 +63,8 @@ public class CopingStrategyServiceImpl implements CopingStrategyService {
         Optional<CopingStrategy> copingStrategy = jpaCopingStrategyRepository.findById(copingStrategyDto.getCopingStrategyId());
         if(copingStrategy.isPresent()){
             CopingStrategy copingStrategyModel = copingStrategy.get();
-            copingStrategyModel.setType(copingStrategyDto.getType());
-            if (!copingStrategyDto.getInstructions().isEmpty()){
+            modelMapper.map(copingStrategyDto, copingStrategyModel);
+            if (copingStrategyDto.getInstructions() != null){
                 List<Instruction> instructions = new ArrayList<>();
                 for( InstructionDTO i : copingStrategyDto.getInstructions()){
                     Instruction instruction = jpaInstructionRepository.save(modelMapper.map(i, Instruction.class));

@@ -133,4 +133,12 @@ public class ResourcesServiceImpl implements ResourcesService {
         response.setSafetyPlanId(socialLocation.getSafetyplan().getSafetyplanId());
         return response;
     }
+
+    @Override
+    public SocialLocationDTO updateSocialLocation(SocialLocationDTO socialLocationDTO) {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        SocialLocation socialLocation = socialLocationRepository.findById(socialLocationDTO.getSocialLocationId()).get();
+        modelMapper.map(socialLocationDTO, socialLocation);
+        return modelMapper.map(socialLocationRepository.save(socialLocation), SocialLocationDTO.class);
+    }
 }

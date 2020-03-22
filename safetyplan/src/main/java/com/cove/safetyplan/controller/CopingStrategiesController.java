@@ -33,7 +33,7 @@ public class CopingStrategiesController {
      * @param copingStrategyDto {Coping strategy to update}
      * @return {Coping strategy dto}
      */
-    @PutMapping("/")
+    @PutMapping("/update")
     public Response updateCopingStrategy(@RequestBody @Valid CopingStrategyDto copingStrategyDto){
         return Response.ok().setPayload(copingStrategyService.updateCopingStrategy(copingStrategyDto));
     }

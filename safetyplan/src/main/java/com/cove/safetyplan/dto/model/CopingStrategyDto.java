@@ -7,7 +7,8 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString

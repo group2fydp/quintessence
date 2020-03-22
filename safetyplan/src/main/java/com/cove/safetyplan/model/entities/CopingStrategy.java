@@ -2,9 +2,7 @@ package com.cove.safetyplan.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
@@ -15,10 +13,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Audited
 @Entity
 @Table(name="coping_strategy")
@@ -30,7 +30,7 @@ import java.util.List;
                 "SET is_deleted = true " +
                 "WHERE coping_strategy_id = ?")
 @Where(clause = "is_deleted = false")
-public class CopingStrategy {
+public class CopingStrategy implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long copingStrategyId;
@@ -44,8 +44,6 @@ public class CopingStrategy {
     @Column(nullable = false)
     private String description;
 
-//    private String instructions;
-
     private String videoUrl;
     private String videoType;
     private String externalApp;
@@ -56,10 +54,12 @@ public class CopingStrategy {
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
     private Date createDate;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modify_date")
     private Date lastModifyDate;
 
     private boolean isDeleted;

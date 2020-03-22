@@ -15,4 +15,5 @@ public interface ResourcesService {
     List<InstitutionLocationResponseDTO> getAllInstitutionLocations();
     List<SocialLocationDTO> getSocialLocationForSafetyPlan(long safetyplanId);
     SocialLocationDTO createSocialLocation(SocialLocationDTO socialLocationDTO);
+    SocialLocationDTO updateSocialLocation(SocialLocationDTO socialLocationDTO);
 }
