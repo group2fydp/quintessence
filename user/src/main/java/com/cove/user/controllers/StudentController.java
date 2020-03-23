@@ -67,8 +67,7 @@ public class StudentController {
 
     @PostMapping("/new")
     public StudentDTO createStudent(@RequestBody StudentDTO studentDTO){
-        studentService.addStudent(studentDTO);
-        return studentService.getStudentByUsername(studentDTO.getUsername());
+        return studentService.addStudentAndGetStudentByUsername(studentDTO);
     }
 
     @PutMapping("/update")
