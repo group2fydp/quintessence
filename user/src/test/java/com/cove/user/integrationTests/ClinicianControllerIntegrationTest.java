@@ -161,6 +161,7 @@ public class ClinicianControllerIntegrationTest {
         String requestBody = objectMapper.writeValueAsString(clinicianDTO);
 
         Mockito.when(clinicianService.updateClinician(Mockito.any())).thenReturn(clinicianDTO);
+        Mockito.when(clinicianService.getClinicianByUsername(Mockito.anyString())).thenReturn(Optional.of(clinicianDTO));
         this.mockMvc.perform(MockMvcRequestBuilders.put("/clinician/update")
                 .header("X-TenantID", 1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -168,5 +169,12 @@ public class ClinicianControllerIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.clinicianId").value(1));
+    }
+
+    @Test
+    public void testDeleteClinician() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/clinician/delete/{id}", 1).header("X-TenantID", 1).accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.deleted").value(true));
     }
 }
