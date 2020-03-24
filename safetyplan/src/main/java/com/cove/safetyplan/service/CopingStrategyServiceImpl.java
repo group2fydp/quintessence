@@ -104,7 +104,10 @@ public class CopingStrategyServiceImpl implements CopingStrategyService {
         if (copingStrategy.isPresent()){
             jpaCopingStrategyRepository.delete(copingStrategy.get());
         }
-        throw exception(COPINGSTRATEGY, ENTITY_NOT_FOUND, Long.toString(copingStrategyId));
+        else{
+            throw exception(COPINGSTRATEGY, ENTITY_NOT_FOUND, Long.toString(copingStrategyId));
+        }
+
     }
 
     @Override
@@ -116,7 +119,9 @@ public class CopingStrategyServiceImpl implements CopingStrategyService {
             if(!copingStrategies.isEmpty())
                 copingStrategies.forEach(copingStrategy -> jpaCopingStrategyRepository.delete(copingStrategy));
         }
-        throw exception(SAFETYPLAN, ENTITY_NOT_FOUND, Long.toString(safetyplanId));
+        else {
+            throw exception(SAFETYPLAN, ENTITY_NOT_FOUND, Long.toString(safetyplanId));
+        }
     }
 
     private RuntimeException exception(EntityType entityType, ExceptionType exceptionType, String... args) {

@@ -9,6 +9,7 @@ public interface ClinicianService {
     ClinicianDTO getClinicianById(long clinicianId);
     Optional<ClinicianDTO> getClinicianByUsername(String username);
     ClinicianDTO updateClinician(ClinicianDTO clinicianDTO);
+    ClinicianDTO addClinicianAndGetByUsername(ClinicianDTO clinicianDTO);
     void addClinician(ClinicianDTO clinicianDTO);
     List<StudentDTO> getAllStudentsForClinician(long clinicianId);
     String deleteClinician(long clicianId);

@@ -81,6 +81,13 @@ public class ClinicianServiceImpl extends TenantService implements ClinicianServ
         Clinician clinician = modelMapper.map(clinicianDTO, Clinician.class);
         clinicianRepository.save(clinician);
     }
+
+    @Override
+    public ClinicianDTO addClinicianAndGetByUsername(ClinicianDTO clinicianDTO) {
+        addClinician(clinicianDTO);
+        return getClinicianByUsername(clinicianDTO.getUsername()).get();
+    }
+
     @Override
     public List<StudentDTO> getAllStudentsForClinician(long clinicianId){
         //TODO handle null optional for clinician

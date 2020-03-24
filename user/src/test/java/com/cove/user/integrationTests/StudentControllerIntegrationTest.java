@@ -27,8 +27,6 @@ import java.util.Optional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StudentControllerIntegrationTest {
-    private final static String URI = "/student";
-
     @MockBean
     private StudentService studentService;
 
@@ -57,7 +55,8 @@ public class StudentControllerIntegrationTest {
         studentDTO.setStudentEmail("test@test.com");
         studentDTO.setStudentNumber(1111111);
         studentDTO.setPassword("password");
-        studentDTO.setClinicianId(10000000);
+        studentDTO.setClinicianId(1);
+        studentDTO.setUsername("testStudent");
 
         Mockito.when(studentService.getStudentById(Mockito.anyLong())).thenReturn(studentDTO);
 
@@ -81,7 +80,8 @@ public class StudentControllerIntegrationTest {
         studentDTO.setStudentEmail("test@test.com");
         studentDTO.setStudentNumber(1111111);
         studentDTO.setPassword("password");
-        studentDTO.setClinicianId(10000000);
+        studentDTO.setClinicianId(1);
+        studentDTO.setUsername("testStudent");
 
         String requestBody = objectMapper.writeValueAsString(studentDTO);
 
@@ -109,7 +109,8 @@ public class StudentControllerIntegrationTest {
         studentDTO.setStudentEmail("test@test.com");
         studentDTO.setStudentNumber(1111111);
         studentDTO.setPassword("password");
-        studentDTO.setClinicianId(10000000);
+        studentDTO.setClinicianId(1);
+        studentDTO.setUsername("testStudent");
 
         String requestBody = objectMapper.writeValueAsString(studentDTO);
 

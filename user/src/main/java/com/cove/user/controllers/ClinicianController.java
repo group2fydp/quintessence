@@ -27,8 +27,7 @@ public class ClinicianController {
 
     @PostMapping("/new")
     public ClinicianDTO createClinician(@RequestBody ClinicianDTO clinicianDTO){
-        clinicianService.addClinician(clinicianDTO);
-        return clinicianService.getClinicianByUsername(clinicianDTO.getUsername()).get();
+        return clinicianService.addClinicianAndGetByUsername(clinicianDTO);
     }
 
     @PutMapping("/update")

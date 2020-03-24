@@ -46,6 +46,11 @@ public class StudentController {
         return studentService.getStudentById(id);
     }
 
+    @RequestMapping("/username/{username}")
+    public  StudentDTO getStudentByUsername(@PathVariable String username){
+        return studentService.getStudentByUsername(username);
+    }
+
     @RequestMapping("/{id}/contacts")
     public List<ContactDTO> getAllContactsForStudent(@PathVariable final int id){
         return contactService.getAllContactsForStudent(id);

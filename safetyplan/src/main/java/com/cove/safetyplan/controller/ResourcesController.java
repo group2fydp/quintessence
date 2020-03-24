@@ -28,6 +28,11 @@ public class ResourcesController {
         return resourcesService.createMentalHealthService(mentalHealthServiceDTO);
     }
 
+    @GetMapping("/institutionLocation/{id}/mentalHealthServices")
+    public List<MentalHealthServiceDTO> getAllMentalHealthServicesForInstitution(@PathVariable long id){
+        return resourcesService.getMentalHealthServicesForInstitutionLocation(id);
+    }
+
     @GetMapping("/institutionLocations")
     public List<InstitutionLocationResponseDTO> getInstitutionLocations(){
         return resourcesService.getAllInstitutionLocations();
